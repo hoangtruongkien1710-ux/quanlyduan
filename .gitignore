@@ -6,3 +6,4 @@ next-env.d.ts
 google-service-account.json
 *service-account*.json
 google-key.json
+.next-test

@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  distDir: process.env.NEXT_DIST_DIR || '.next',
   serverExternalPackages: ['@prisma/client', '.prisma/client'],
   outputFileTracingIncludes: { '/': ['./legacy/**', './lib/engine/overrides.js'], '/api/rpc/[fn]': ['./legacy/**', './lib/engine/overrides.js'] },
 };
