@@ -97,12 +97,12 @@ Kế hoạch định kỳ nằm trong các cột của CongViec, như bản hi�
 - [x] Hiện màn đăng nhập → vào app thấy menu và Tổng quan
 
 ### Giai đoạn 2 — Dự án, Công việc, Việc bổ sung, Giờ làm, Vướng mắc
-- [ ] apiSaveProject, apiDeleteProject
-- [ ] apiSaveTask, apiDeleteTask, apiBulkAssign, apiTaskHistory, apiAddStatus, apiReassignTasks, apiCreateAdhoc
-- [ ] apiSaveSubTask, apiDeleteSubTask
+- [x] apiSaveProject, apiDeleteProject
+- [x] apiSaveTask, apiDeleteTask, apiBulkAssign, apiTaskHistory, apiAddStatus, apiReassignTasks, apiCreateAdhoc
+- [x] apiSaveSubTask, apiDeleteSubTask
 - [ ] apiSaveTime, apiDeleteTime, apiConfirmPlans, apiApproveTime
 - [ ] apiSaveDay, apiSaveDayReport, apiSaveProjectDay, apiLinkProjectDay, apiDeleteDay, apiSaveDailyNote
-- [ ] apiSaveBlocker, apiResumeBlocker, apiDeleteBlocker
+- [x] apiSaveBlocker, apiResumeBlocker, apiDeleteBlocker
 
 ### Giai đoạn 3 — Kết quả công việc
 - [ ] apiSaveProducts, apiDeleteProduct, apiSaveProductTypes, apiAddProductTypes
@@ -151,3 +151,4 @@ npm run dev       # mở http://localhost:3100
 - 23/11/2026: Ghi nhận: nhân sự đang lấy từ Google Sheet nhân sự riêng → thêm 2 phương án (đọc trực tiếp / đồng bộ về bảng Staff) ở mục 9, chờ chốt.
 - 23/11/2026: **Chốt**: giữ Google Sheet nhân sự làm nguồn gốc; app đồng bộ về bảng Staff qua Google Sheets API (service account, quyền Người xem), lúc khởi động, 10 phút / lần và nút "Đồng bộ nhân sự". Chỉ đọc các cột cần dùng, không đọc cột lương, mã đăng nhập mã hóa. Bỏ việc "màn quản lý nhân sự mới"; thêm việc tạo service account vào Giai đoạn 1.
 - 23/11/2026: **Xong Giai đoạn 1.** PostgreSQL 16 chạy bằng Docker (container smee_qlda_db, cổng 5432). Prisma: 18 bảng APP_* + Staff + AppProperty, sinh tự động từ Config.js. Lớp tương thích Apps Script chạy nguyên Code.js (mỗi lần gọi một ngữ cảnh mới; dữ liệu trong bộ nhớ, lưu các tab đã đổi xuống PostgreSQL). Trang chính giữ nguyên giao diện, thêm lớp thay google.script.run. Đăng nhập bằng mã mã hoá (HMAC-SHA256 với APP_SECRET) trong bảng Staff. Đã thử: màn đăng nhập → vào app thấy menu + Tổng quan, không lỗi JS. Đo trên máy: đăng nhập 52 ms, lưu dự án / công việc 21 ms, tải dữ liệu 10 ms. Đồng bộ nhân sự đã viết, chờ service account.
+- 23/11/2026: **Giai đoạn 2** — test e2e (tests/e2e-phase2.mjs) 31/31 đạt: dự án, công việc, phân quyền nhân viên (chỉ thấy / sửa việc của mình), việc bổ sung, đầu việc, giờ làm theo ngày, giờ trực tiếp vào dự án, báo cáo ngày, vướng mắc, đăng xuất. Engine tự thêm cấu hình mặc định (phần cần của setupApp). Dữ liệu nạp lại đúng sau khi khởi động lại máy chủ.
