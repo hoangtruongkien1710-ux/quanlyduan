@@ -123,7 +123,7 @@ docker compose up -d
 npm install
 npx prisma migrate dev
 npm run seed      # cần đặt ADMIN_LOGIN_CODE trong .env
-npm run dev       # mở http://localhost:3000
+npm run dev       # mở http://localhost:3100
 ```
 
 ## 9. Rủi ro và quyết định còn mở
@@ -136,3 +136,4 @@ npm run dev       # mở http://localhost:3000
 ## 10. Nhật ký tiến độ
 - 23/11/2026: Kiểm tra môi trường: Docker 29.8, Compose 5.5, Node 26, npm 11. Tạo thư mục SMEE_NEXT, cài Next.js 15.5.4, Prisma 6.16.2. Viết KH.md.
 - 23/11/2026: Theo yêu cầu, chuyển thư mục vào `D:\WEBSITE SMEE\WEB NỘI BỘ` và đổi tên thành **Quản lý dự án và công việc** (giữ lịch sử git). Đang chờ duyệt kế hoạch trước khi làm Giai đoạn 1.
+- 23/11/2026: Cổng 3000 trên máy đã bị chương trình khác dùng → app chạy ở **cổng 3100** (http://localhost:3100). PostgreSQL dùng cổng 5432 (đang trống).
