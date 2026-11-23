@@ -119,7 +119,7 @@ Kế hoạch định kỳ nằm trong các cột của CongViec, như bản hi�
 - [x] apiPropose, apiSaveProposal, apiReviewProposal
 - [x] apiSaveReadyPct, apiSaveWorkDays, apiSaveHoliday, apiDeleteHoliday, apiAddVnHolidays
 - [x] apiDemoInfo, apiDemoDelete, apiWipeInfo, apiWipeAll (sao lưu = bản chụp JSON trong database), apiCleanColumns (không cần, bỏ)
-- [x] apiImportRows (Excel) chạy được. Chưa hỗ trợ (báo lỗi rõ): apiGsheetTabs, apiGsheetPreview, apiImportGsheet, apiImportOwner, apiImportHistory, apiImportFromSource, apiTaoFileMau (phụ thuộc Google, cần quyết định: bỏ hoặc thay)
+- [x] **Chỉ nhập Excel** (đã chốt): apiImportRows chạy được; nút "Tải file mẫu Excel" tạo file .xlsx ngay trên trình duyệt. Đã bỏ khỏi giao diện và chặn ở máy chủ: nhập từ Google Sheet (apiGsheetTabs, apiGsheetPreview, apiImportGsheet, apiImportHistory, apiImportOwner), đồng bộ Google Sheet nguồn (apiImportFromSource), file mẫu trên Drive (apiTaoFileMau), dọn cột thừa (apiCleanColumns).
 
 ### Giai đoạn 7 — Kiểm thử, triển khai
 - [x] Test từng vai trò (Giám đốc, Trợ lý GĐ, Account, Sale, nhân viên) — tests/e2e-phase2.mjs, tests/e2e-rest.mjs
@@ -141,7 +141,7 @@ npm run dev       # mở http://localhost:3100
 - **Tên miền** (ví dụ app.smee.vn) và HTTPS.
 - **Service account Google Cloud** (cần anh/chị làm, tôi sẽ hướng dẫn từng bước ở Giai đoạn 1): tạo dự án Google Cloud, bật Google Sheets API, tạo service account và tải khóa JSON, chia sẻ sheet nhân sự cho email service account với quyền Người xem.
 - **Nhân sự** (đã chốt): giữ Google Sheet nhân sự làm nguồn gốc, đồng bộ về bảng Staff (mục 5a). Nhân viên mới hoặc thay đổi trên Sheet có hiệu lực sau tối đa khoảng 10 phút, hoặc ngay khi bấm "Đồng bộ nhân sự".
-- **Các tính năng gắn với Google** (nhập từ Google Sheet, tạo file mẫu trên Drive, sao lưu sang Drive): bỏ hoặc thay bằng nhập Excel / sao lưu trong database.
+- **Các tính năng gắn với Google** (đã chốt): chỉ nhập Excel; file mẫu Excel tạo trên trình duyệt; sao lưu khi làm trắng là bản chụp trong database.
 - **Telegram**: mã bot nhập lại trong Thiết lập, không chép từ code cũ.
 
 ## 10. Nhật ký tiến độ
@@ -154,3 +154,4 @@ npm run dev       # mở http://localhost:3100
 - 23/11/2026: **Giai đoạn 2** — test e2e (tests/e2e-phase2.mjs) 31/31 đạt: dự án, công việc, phân quyền nhân viên (chỉ thấy / sửa việc của mình), việc bổ sung, đầu việc, giờ làm theo ngày, giờ trực tiếp vào dự án, báo cáo ngày, vướng mắc, đăng xuất. Engine tự thêm cấu hình mặc định (phần cần của setupApp). Dữ liệu nạp lại đúng sau khi khởi động lại máy chủ.
 - 23/11/2026: **Giai đoạn 3–6** — test e2e (tests/e2e-rest.mjs) 35/35 đạt: kết quả công việc (chống lưu trùng, chặn sai người), giờ làm trực tiếp vào dự án + gắn việc, Báo cáo Account / Sale (phân quyền, nhận xét), Báo cáo Giám đốc (gửi, đánh giá, cuộc họp, nhiệm vụ + lịch sử, Telegram), đề xuất (chặn nhân viên tạo dự án), thiết lập, ngày nghỉ, mục Dữ liệu. **Giai đoạn 4**: mở cả 14 màn với dữ liệu thật, không lỗi JS. Nhập Excel chạy được. Các chức năng gắn với Google (nhập từ Google Sheet, file mẫu trên Drive) báo lỗi rõ ràng, chờ quyết định bỏ / thay.
 - 23/11/2026: Đã xoá sạch dữ liệu thử trong database local (giữ cấu trúc bảng). Tài khoản quản trị dùng mã tạm lúc test — anh/chị cần đặt ADMIN_LOGIN_CODE trong .env rồi chạy npm run seed để đặt mã của mình. **Còn lại:** (1) service account Google để đồng bộ nhân sự + nút "Đồng bộ nhân sự" trên giao diện; (2) quyết định bỏ / thay các chức năng gắn với Google; (3) nhập mã bot Telegram và gửi thử thật; (4) Giai đoạn 7: Dockerfile cho app, sao lưu database hằng ngày, triển khai (chờ chốt hosting).
+- 23/11/2026: **Chốt "Chỉ nhập Excel".** Bỏ các nút / form nhập từ Google Sheet, đồng bộ Google Sheet nguồn, file mẫu Drive, mục "Dọn cột thừa trong Google Sheet" (scripts/patch-excel-only.cjs áp lên legacy/Scripts.html). Máy chủ chặn các hàm tương ứng. Thêm nút "Tải file mẫu Excel" (.xlsx, 2 sheet Nhập công việc + Hướng dẫn). Chạy lại test: 31/31 và 35/35 đạt; màn Thiết lập / Công việc không còn chữ Google, không lỗi JS. Đã xoá dữ liệu thử.
