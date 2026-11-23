@@ -64,7 +64,7 @@ Mỗi tab APP_* là một bảng. Mọi cột đều kiểu chữ, giống Sheet
 | bgdMeet | APP_CUOC_HOP | CuocHop | 14 |
 | bgdTask | APP_NHIEM_VU_HOP | NhiemVuHop | 20 |
 | bgdHist | APP_LS_NHIEM_VU_HOP | LsNhiemVuHop | 11 |
-| — | Sheet nhân sự | **Staff** (họ tên, mã NV, email, chức vụ, phòng ban, tình trạng, mã đăng nhập đã mã hóa) | — |
+| — | Google Sheet nhân sự (giữ làm nguồn gốc) | **Staff** — bản đồng bộ / bộ đệm (họ tên, mã NV, email, chức vụ, phòng ban, tình trạng, mã đăng nhập đã mã hóa) | — |
 | — | Script Properties | **AppProperty** (Telegram, khóa làm trắng…) | — |
 
 Kế hoạch định kỳ nằm trong các cột của CongViec, như bản hiện tại.
@@ -81,7 +81,7 @@ Kế hoạch định kỳ nằm trong các cột của CongViec, như bản hi�
 - [ ] Docker PostgreSQL 16, Prisma schema, migrate
 - [ ] Lớp tương thích Apps Script (sheet trong bộ nhớ ↔ PostgreSQL, cache, lock, properties)
 - [ ] Trang HTML giữ nguyên giao diện + shim google.script.run → /api/rpc
-- [ ] Bảng Staff + seed tài khoản quản trị (mã lấy từ biến môi trường)
+- [ ] Bảng Staff + seed tài khoản quản trị (mã lấy từ biến môi trường) để chạy thử khi chưa nối Google Sheet nhân sự
 - [ ] apiKiemTraKetNoi, apiLogin, apiLogout, apiBootstrap, apiLoadSection
 - [ ] Hiện màn đăng nhập → vào app thấy menu và Tổng quan
 
@@ -109,7 +109,7 @@ Kế hoạch định kỳ nằm trong các cột của CongViec, như bản hi�
 - [ ] apiSaveReadyPct, apiSaveWorkDays, apiSaveHoliday, apiDeleteHoliday, apiAddVnHolidays
 - [ ] apiDemoInfo, apiDemoDelete, apiWipeInfo, apiWipeAll (sao lưu = bản chụp JSON trong database), apiCleanColumns (không cần, bỏ)
 - [ ] apiImportRows (Excel); apiGsheetTabs, apiGsheetPreview, apiImportGsheet, apiImportOwner, apiImportHistory, apiImportFromSource, apiTaoFileMau (phụ thuộc Google, cần quyết định: bỏ hoặc thay)
-- [ ] Màn quản lý nhân sự mới (thêm / sửa nhân sự, đặt mã đăng nhập), vì không còn sheet nhân sự
+- [ ] Kết nối Google Sheet nhân sự (cách A hoặc B ở mục 9) + nút "Đồng bộ nhân sự"
 
 ### Giai đoạn 7 — Kiểm thử, triển khai
 - [ ] Test từng vai trò (Giám đốc, Trợ lý GĐ, Account, Sale, nhân viên)
@@ -129,7 +129,10 @@ npm run dev       # mở http://localhost:3100
 ## 9. Rủi ro và quyết định còn mở
 - **Hosting**: Vercel + Neon/Supabase, hay máy chủ / VPS riêng chạy Docker? Lớp tương thích giữ dữ liệu trong bộ nhớ, nên hợp với **một máy chủ chạy liên tục** (VPS / Docker). Nếu dùng Vercel (serverless) sẽ cần đổi cách làm.
 - **Tên miền** (ví dụ app.smee.vn) và HTTPS.
-- **Nhân sự**: quản lý trong app mới (bảng Staff), không đọc sheet lương nữa.
+- **Nhân sự (CẦN CHỐT)**: danh sách nhân viên hiện được **lấy từ một Google Sheet nhân sự khác** (gồm họ tên, chức vụ, phòng ban, tình trạng, cột "Pass App Dự án"). Có 2 cách:
+  - **Cách A — Vẫn đọc trực tiếp Google Sheet đó**: app Next.js gọi Google Sheets API bằng một tài khoản dịch vụ (service account) được chia sẻ quyền **chỉ xem** sheet nhân sự. Chỉ đọc các cột cần dùng, có lưu tạm vài phút. Thay đổi nhân sự trên Sheet có hiệu lực gần như ngay. Cần Internet và một khóa service account đặt trong `.env`.
+  - **Cách B — Đồng bộ về bảng Staff** (khuyến nghị): như cách A, nhưng app định kỳ (ví dụ 10 phút) và khi bấm nút "Đồng bộ nhân sự" sẽ chép họ tên, chức vụ, phòng ban, tình trạng về bảng Staff. Mã đăng nhập được **mã hóa** trước khi lưu. Đăng nhập nhanh và vẫn chạy được khi Google chậm; Sheet nhân sự vẫn là nơi quản lý gốc.
+  - Cả hai cách: app chỉ **đọc**, không ghi gì vào sheet nhân sự; không đọc các cột lương.
 - **Các tính năng gắn với Google** (nhập từ Google Sheet, tạo file mẫu trên Drive, sao lưu sang Drive): bỏ hoặc thay bằng nhập Excel / sao lưu trong database.
 - **Telegram**: mã bot nhập lại trong Thiết lập, không chép từ code cũ.
 
@@ -137,3 +140,4 @@ npm run dev       # mở http://localhost:3100
 - 23/11/2026: Kiểm tra môi trường: Docker 29.8, Compose 5.5, Node 26, npm 11. Tạo thư mục SMEE_NEXT, cài Next.js 15.5.4, Prisma 6.16.2. Viết KH.md.
 - 23/11/2026: Theo yêu cầu, chuyển thư mục vào `D:\WEBSITE SMEE\WEB NỘI BỘ` và đổi tên thành **Quản lý dự án và công việc** (giữ lịch sử git). Đang chờ duyệt kế hoạch trước khi làm Giai đoạn 1.
 - 23/11/2026: Cổng 3000 trên máy đã bị chương trình khác dùng → app chạy ở **cổng 3100** (http://localhost:3100). PostgreSQL dùng cổng 5432 (đang trống).
+- 23/11/2026: Ghi nhận: nhân sự đang lấy từ Google Sheet nhân sự riêng → thêm 2 phương án (đọc trực tiếp / đồng bộ về bảng Staff) ở mục 9, chờ chốt.
