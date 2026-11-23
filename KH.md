@@ -87,14 +87,14 @@ Kế hoạch định kỳ nằm trong các cột của CongViec, như bản hi�
 
 ## 7. Các giai đoạn (69 hàm máy chủ)
 ### Giai đoạn 1 — Nền tảng, đăng nhập, menu
-- [ ] Docker PostgreSQL 16, Prisma schema, migrate
-- [ ] Lớp tương thích Apps Script (sheet trong bộ nhớ ↔ PostgreSQL, cache, lock, properties)
-- [ ] Trang HTML giữ nguyên giao diện + shim google.script.run → /api/rpc
-- [ ] Bảng Staff + seed tài khoản quản trị (mã lấy từ biến môi trường) để chạy thử khi chưa nối Google Sheet nhân sự
+- [x] Docker PostgreSQL 16, Prisma schema, migrate
+- [x] Lớp tương thích Apps Script (sheet trong bộ nhớ ↔ PostgreSQL, cache, lock, properties)
+- [x] Trang HTML giữ nguyên giao diện + shim google.script.run → /api/rpc
+- [x] Bảng Staff + seed tài khoản quản trị (mã lấy từ biến môi trường) để chạy thử khi chưa nối Google Sheet nhân sự
 - [ ] Hướng dẫn anh/chị tạo service account Google Cloud + chia sẻ sheet nhân sự (quyền Người xem)
-- [ ] Đồng bộ nhân sự: Google Sheets API → bảng Staff (khi khởi động, 10 phút / lần, nút "Đồng bộ nhân sự"), mã hóa mã đăng nhập
-- [ ] apiKiemTraKetNoi, apiLogin, apiLogout, apiBootstrap, apiLoadSection
-- [ ] Hiện màn đăng nhập → vào app thấy menu và Tổng quan
+- [x] (Code xong, chờ service account để chạy thật) Đồng bộ nhân sự: Google Sheets API → bảng Staff (khi khởi động, 10 phút / lần, nút "Đồng bộ nhân sự"), mã hóa mã đăng nhập
+- [x] apiKiemTraKetNoi, apiLogin, apiLogout, apiBootstrap, apiLoadSection
+- [x] Hiện màn đăng nhập → vào app thấy menu và Tổng quan
 
 ### Giai đoạn 2 — Dự án, Công việc, Việc bổ sung, Giờ làm, Vướng mắc
 - [ ] apiSaveProject, apiDeleteProject
@@ -150,3 +150,4 @@ npm run dev       # mở http://localhost:3100
 - 23/11/2026: Cổng 3000 trên máy đã bị chương trình khác dùng → app chạy ở **cổng 3100** (http://localhost:3100). PostgreSQL dùng cổng 5432 (đang trống).
 - 23/11/2026: Ghi nhận: nhân sự đang lấy từ Google Sheet nhân sự riêng → thêm 2 phương án (đọc trực tiếp / đồng bộ về bảng Staff) ở mục 9, chờ chốt.
 - 23/11/2026: **Chốt**: giữ Google Sheet nhân sự làm nguồn gốc; app đồng bộ về bảng Staff qua Google Sheets API (service account, quyền Người xem), lúc khởi động, 10 phút / lần và nút "Đồng bộ nhân sự". Chỉ đọc các cột cần dùng, không đọc cột lương, mã đăng nhập mã hóa. Bỏ việc "màn quản lý nhân sự mới"; thêm việc tạo service account vào Giai đoạn 1.
+- 23/11/2026: **Xong Giai đoạn 1.** PostgreSQL 16 chạy bằng Docker (container smee_qlda_db, cổng 5432). Prisma: 18 bảng APP_* + Staff + AppProperty, sinh tự động từ Config.js. Lớp tương thích Apps Script chạy nguyên Code.js (mỗi lần gọi một ngữ cảnh mới; dữ liệu trong bộ nhớ, lưu các tab đã đổi xuống PostgreSQL). Trang chính giữ nguyên giao diện, thêm lớp thay google.script.run. Đăng nhập bằng mã mã hoá (HMAC-SHA256 với APP_SECRET) trong bảng Staff. Đã thử: màn đăng nhập → vào app thấy menu + Tổng quan, không lỗi JS. Đo trên máy: đăng nhập 52 ms, lưu dự án / công việc 21 ms, tải dữ liệu 10 ms. Đồng bộ nhân sự đã viết, chờ service account.

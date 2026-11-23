@@ -1,0 +1,424 @@
+// TỰ SINH bởi scripts/gen-schema.mjs — không sửa tay. Chạy: npm run gen:schema
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// Nhân sự — bản đồng bộ từ Google Sheet nhân sự (mã đăng nhập chỉ lưu dạng mã hoá).
+model Staff {
+  id        String   @id @default(cuid())
+  maNV      String   @default("")
+  hoTen     String
+  email     String   @default("")
+  chucVu    String   @default("")
+  phongBan  String   @default("")
+  tinhTrang String   @default("")
+  codeHash  String   @default("")
+  pos       Int      @default(0)
+  nguon     String   @default("sheet") // sheet | seed
+  updatedAt DateTime @updatedAt
+  @@index([codeHash])
+}
+
+/// Thay cho Script Properties của Apps Script (Telegram, khoá làm trắng…).
+model AppProperty {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+/// Tab APP_DU_AN
+model T_projects {
+  rid Int @id @default(autoincrement())
+  pos Int @default(0)
+  id String @default("")
+  tenDuAn String @default("")
+  moTa String @default("")
+  createdAt String @default("")
+  updatedAt String @default("")
+  createdBy String @default("")
+  @@index([pos])
+  @@map("app_du_an")
+}
+
+/// Tab APP_CONG_VIEC
+model T_tasks {
+  rid Int @id @default(autoincrement())
+  pos Int @default(0)
+  id String @default("")
+  duAnId String @default("")
+  tenDuAn String @default("")
+  stt String @default("")
+  hangMuc String @default("")
+  tenCongViec String @default("")
+  yeuCau String @default("")
+  uuTien String @default("")
+  phongBan String @default("")
+  nguoiPhuTrach String @default("")
+  nguoiPhuTrachId String @default("")
+  deadline String @default("")
+  ngayBatDau String @default("")
+  ngayKetThuc String @default("")
+  trangThai String @default("")
+  tienDo String @default("")
+  linkSanPham String @default("")
+  ghiChu String @default("")
+  nguonImport String @default("")
+  nguonDong String @default("")
+  createdAt String @default("")
+  updatedAt String @default("")
+  createdBy String @default("")
+  updatedBy String @default("")
+  trangThaiDuyet String @default("")
+  lanGuiDuyet String @default("")
+  guiDuyetLuc String @default("")
+  guiDuyetBoi String @default("")
+  nguoiDuyetId String @default("")
+  nguoiDuyet String @default("")
+  duyetLuc String @default("")
+  nhanXetDuyet String @default("")
+  thoiGianHoanThanh String @default("")
+  loaiViec String @default("")
+  ngayGiao String @default("")
+  chuKy String @default("")
+  chiTieu String @default("")
+  donViChiTieu String @default("")
+  loaiChiTieu String @default("")
+  hanTrongKy String @default("")
+  @@index([pos])
+  @@map("app_cong_viec")
+}
+
+/// Tab APP_LICH_GIO
+model T_time {
+  rid Int @id @default(autoincrement())
+  pos Int @default(0)
+  id String @default("")
+  taskId String @default("")
+  employeeKey String @default("")
+  loai String @default("")
+  batDau String @default("")
+  ketThuc String @default("")
+  soGio String @default("")
+  ghiChu String @default("")
+  duyet String @default("")
+  createdAt String @default("")
+  updatedAt String @default("")
+  createdBy String @default("")
+  updatedBy String @default("")
+  viecConId String @default("")
+  @@index([pos])
+  @@map("app_lich_gio")
+}
+
+/// Tab APP_VUONG_MAC
+model T_blockers {
+  rid Int @id @default(autoincrement())
+  pos Int @default(0)
+  id String @default("")
+  taskId String @default("")
+  nhomNguyenNhan String @default("")
+  nguyenNhan String @default("")
+  dangCho String @default("")
+  phuThuocTaskId String @default("")
+  nguoiCanXuLy String @default("")
+  batDauCho String @default("")
+  soLuongDuKien String @default("")
+  donViDuKien String @default("")
+  duKienTiepTuc String @default("")
+  ketThucCho String @default("")
+  trangThai String @default("")
+  ghiChu String @default("")
+  createdAt String @default("")
+  updatedAt String @default("")
+  createdBy String @default("")
+  updatedBy String @default("")
+  congViecThayTheId String @default("")
+  moTaViecKhac String @default("")
+  employeeKey String @default("")
+  viecConId String @default("")
+  @@index([pos])
+  @@map("app_vuong_mac")
+}
+
+/// Tab APP_NHAT_KY
+model T_audit {
+  rid Int @id @default(autoincrement())
+  pos Int @default(0)
+  id String @default("")
+  thoiGian String @default("")
+  actor String @default("")
+  hanhDong String @default("")
+  loai String @default("")
+  doiTuongId String @default("")
+  noiDung String @default("")
+  @@index([pos])
+  @@map("app_nhat_ky")
+}
+
+/// Tab APP_CAU_HINH
+model T_config {
+  rid Int @id @default(autoincrement())
+  pos Int @default(0)
+  key String @default("")
+  value String @default("")
+  @@index([pos])
+  @@map("app_cau_hinh")
+}
+
+/// Tab APP_NGAY_NGHI
+model T_holidays {
+  rid Int @id @default(autoincrement())
+  pos Int @default(0)
+  id String @default("")
+  ngay String @default("")
+  tenNgayNghi String @default("")
+  loai String @default("")
+  ghiChu String @default("")
+  nguoiTao String @default("")
+  thoiGianTao String @default("")
+  @@index([pos])
+  @@map("app_ngay_nghi")
+}
+
+/// Tab APP_VIEC_CON
+model T_subtasks {
+  rid Int @id @default(autoincrement())
+  pos Int @default(0)
+  id String @default("")
+  congViecId String @default("")
+  stt String @default("")
+  tenViecCon String @default("")
+  moTa String @default("")
+  ghiChu String @default("")
+  nguoiTao String @default("")
+  thoiGianTao String @default("")
+  nguoiCapNhat String @default("")
+  thoiGianCapNhat String @default("")
+  @@index([pos])
+  @@map("app_viec_con")
+}
+
+/// Tab APP_SAN_PHAM
+model T_products {
+  rid Int @id @default(autoincrement())
+  pos Int @default(0)
+  id String @default("")
+  ngay String @default("")
+  employeeKey String @default("")
+  nguoiThucHien String @default("")
+  duAnId String @default("")
+  congViecId String @default("")
+  tenSanPham String @default("")
+  loaiSanPham String @default("")
+  soLuong String @default("")
+  links String @default("")
+  tinhTrang String @default("")
+  ghiChu String @default("")
+  maLuongSP String @default("")
+  createdAt String @default("")
+  updatedAt String @default("")
+  createdBy String @default("")
+  updatedBy String @default("")
+  moTaCongViec String @default("")
+  tienDo String @default("")
+  tienDoBaoCao String @default("")
+  sttBaoCao String @default("")
+  ngayGhi String @default("")
+  donViTinh String @default("")
+  @@index([pos])
+  @@map("app_san_pham")
+}
+
+/// Tab APP_BAO_CAO_NGAY
+model T_dailyReports {
+  rid Int @id @default(autoincrement())
+  pos Int @default(0)
+  id String @default("")
+  ngay String @default("")
+  employeeKey String @default("")
+  ghiChu String @default("")
+  createdAt String @default("")
+  updatedAt String @default("")
+  noiDungBaoCao String @default("")
+  @@index([pos])
+  @@map("app_bao_cao_ngay")
+}
+
+/// Tab APP_DE_XUAT
+model T_proposals {
+  rid Int @id @default(autoincrement())
+  pos Int @default(0)
+  id String @default("")
+  congViecId String @default("")
+  nguoiDeXuat String @default("")
+  nguoiDeXuatId String @default("")
+  batDauCu String @default("")
+  hanCu String @default("")
+  batDauMoi String @default("")
+  hanMoi String @default("")
+  lyDo String @default("")
+  trangThai String @default("")
+  nguoiDuyet String @default("")
+  ghiChuDuyet String @default("")
+  thoiGianTao String @default("")
+  thoiGianDuyet String @default("")
+  loai String @default("")
+  payload String @default("")
+  @@index([pos])
+  @@map("app_de_xuat")
+}
+
+/// Tab APP_GIO_LAM_NGAY
+model T_days {
+  rid Int @id @default(autoincrement())
+  pos Int @default(0)
+  id String @default("")
+  ngay String @default("")
+  employeeKey String @default("")
+  congViecId String @default("")
+  soGio String @default("")
+  noiDung String @default("")
+  ghiChu String @default("")
+  createdAt String @default("")
+  updatedAt String @default("")
+  createdBy String @default("")
+  updatedBy String @default("")
+  duAnId String @default("")
+  tenViecTrucTiep String @default("")
+  tienDoNgay String @default("")
+  trangThaiNgay String @default("")
+  @@index([pos])
+  @@map("app_gio_lam_ngay")
+}
+
+/// Tab APP_BC_ACCOUNT
+model T_kdAcc {
+  rid Int @id @default(autoincrement())
+  pos Int @default(0)
+  id String @default("")
+  ngay String @default("")
+  employeeKey String @default("")
+  duAnId String @default("")
+  khachHang String @default("")
+  noiDung String @default("")
+  ketQua String @default("")
+  tienDo String @default("")
+  ghiChu String @default("")
+  createdAt String @default("")
+  updatedAt String @default("")
+  nhanXet String @default("")
+  nguoiNhanXet String @default("")
+  @@index([pos])
+  @@map("app_bc_account")
+}
+
+/// Tab APP_BC_SALE
+model T_kdSale {
+  rid Int @id @default(autoincrement())
+  pos Int @default(0)
+  id String @default("")
+  ngay String @default("")
+  employeeKey String @default("")
+  noiDung String @default("")
+  ghiChu String @default("")
+  createdAt String @default("")
+  updatedAt String @default("")
+  nhanXet String @default("")
+  nguoiNhanXet String @default("")
+  @@index([pos])
+  @@map("app_bc_sale")
+}
+
+/// Tab APP_BC_GIAM_DOC
+model T_bgdRep {
+  rid Int @id @default(autoincrement())
+  pos Int @default(0)
+  id String @default("")
+  ngay String @default("")
+  nguoiBaoCao String @default("")
+  nguoiBaoCaoKey String @default("")
+  phongBan String @default("")
+  noiDung String @default("")
+  telegram String @default("")
+  danhGia String @default("")
+  ghiChuGD String @default("")
+  nguoiDanhGia String @default("")
+  thoiGianDanhGia String @default("")
+  createdAt String @default("")
+  @@index([pos])
+  @@map("app_bc_giam_doc")
+}
+
+/// Tab APP_CUOC_HOP
+model T_bgdMeet {
+  rid Int @id @default(autoincrement())
+  pos Int @default(0)
+  id String @default("")
+  ngay String @default("")
+  tieuDe String @default("")
+  loai String @default("")
+  chuTri String @default("")
+  thanhPhan String @default("")
+  ketLuan String @default("")
+  nguoiLap String @default("")
+  trangThai String @default("")
+  linkBienBan String @default("")
+  createdAt String @default("")
+  updatedAt String @default("")
+  xoaLuc String @default("")
+  nguoiXoa String @default("")
+  @@index([pos])
+  @@map("app_cuoc_hop")
+}
+
+/// Tab APP_NHIEM_VU_HOP
+model T_bgdTask {
+  rid Int @id @default(autoincrement())
+  pos Int @default(0)
+  id String @default("")
+  cuocHopId String @default("")
+  noiDung String @default("")
+  duAn String @default("")
+  phongBan String @default("")
+  nguoiPhuTrach String @default("")
+  nguoiPhoiHop String @default("")
+  ngayGiao String @default("")
+  han String @default("")
+  uuTien String @default("")
+  trangThai String @default("")
+  tienDo String @default("")
+  link String @default("")
+  ghiChu String @default("")
+  nguoiGiao String @default("")
+  nguoiCapNhat String @default("")
+  updatedAt String @default("")
+  hoanThanhLuc String @default("")
+  xoaLuc String @default("")
+  nguoiXoa String @default("")
+  @@index([pos])
+  @@map("app_nhiem_vu_hop")
+}
+
+/// Tab APP_LS_NHIEM_VU_HOP
+model T_bgdHist {
+  rid Int @id @default(autoincrement())
+  pos Int @default(0)
+  id String @default("")
+  nhiemVuId String @default("")
+  cuocHopId String @default("")
+  thoiGian String @default("")
+  nguoiCapNhat String @default("")
+  trangThaiTruoc String @default("")
+  trangThaiSau String @default("")
+  tienDoTruoc String @default("")
+  tienDoSau String @default("")
+  noiDung String @default("")
+  link String @default("")
+  @@index([pos])
+  @@map("app_ls_nhiem_vu_hop")
+}

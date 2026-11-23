@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start -p 3100",
     "gen:schema": "node scripts/gen-schema.mjs",
-    "seed": "node scripts/seed.mjs",
+    "seed": "node --env-file=.env scripts/seed.mjs",
     "prisma:migrate": "prisma migrate dev"
   },
   "dependencies": {

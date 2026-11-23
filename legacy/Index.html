@@ -1,0 +1,135 @@
+
+<!DOCTYPE html><html lang="vi"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<?!= include('Styles'); ?>
+<!-- SMEE BUILD 7.8.3: xác thực bắt buộc; giao diện chỉ chuyển sau khi tải thành công dữ liệu. -->
+<style>
+.smee-build-pill{display:inline-block;margin-left:6px;color:#164da6;background:#e7f0ff;padding:4px 7px;border-radius:7px;font-size:10px;letter-spacing:.08em}
+.passcode-control{position:relative;width:100%}
+.passcode-control input{padding-right:56px!important}
+.passcode-control .eye-toggle{position:absolute;right:9px;top:50%;transform:translateY(-50%);width:40px;height:40px;border:0;border-radius:9px;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.passcode-control .eye-toggle .eye-off{display:block}
+.passcode-control .eye-toggle.is-visible .eye-off{display:none}
+.passcode-control .eye-toggle.is-visible .eye-open{display:block}
+</style>
+<script>window.SMEE_DEMO_MODE = false; window.SMEE_BUILD = '7.8.3'; window.SMEE_CLIENT_READY = false; window.SMEE_EYE_READY = false; window.SMEE_SCRIPTS_STAGE = 'CHUA_THUC_THI'; window.SMEE_CLIENT_ERROR = ''; </script>
+</head><body data-smee-demo="false" data-smee-build="7.8.3">
+<div id="loginScreen" class="login-screen" aria-hidden="false">
+  <div class="login-decoration"><div class="orb orb1"></div><div class="orb orb2"></div><div class="grain"></div>
+    <div class="login-brand"><span class="smee-brand-image"><img src="https://smee.vn/wp-content/uploads/2026/03/Logo-SMEE-e1772561901206.png" alt="Logo SMEE" loading="eager"></span><span>SMEE · QUẢN LÝ DỰ ÁN</span></div>
+    <div class="login-marketing"><span class="mini-pill">QUẢN LÝ CÔNG VIỆC · 2026</span><h1>Rõ việc hôm nay.<br><em>Chủ động ngày mai.</em></h1><p>Dự án, nhân sự, thời gian và deadline trong một hệ thống trực quan.</p>
+    <div class="marketing-stats"><div><b>01</b><span>Không gian hợp nhất</span></div><div><b>24h</b><span>Theo dõi theo giờ</span></div></div></div>
+  </div>
+  <div class="login-panel"><form id="loginForm" class="login-card">
+    <div class="login-icon">✦</div><div class="eyebrow">HỆ THỐNG NỘI BỘ <span class="smee-build-pill">BUILD 7.8.3</span></div><h2>Đăng nhập</h2><p>Nhập mã tại cột <strong>Pass App Dự án</strong> trong danh sách nhân sự.</p>
+    <label for="passcode">Mã đăng nhập</label>
+    <div class="passcode-control">
+      <input id="passcode" type="password" autocomplete="current-password" minlength="6" required placeholder="Nhập mã được cấp" autofocus>
+      <button type="button" id="togglePassword" class="eye-toggle" aria-label="Hiện mật khẩu" aria-pressed="false" title="Hiện mật khẩu">
+        <svg class="eye-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.7-7 10-7 10 7 10 7-3.7 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+        <svg class="eye-off" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18M10.6 5.1A10.7 10.7 0 0 1 12 5c6.3 0 10 7 10 7a16.2 16.2 0 0 1-3 3.4M6.6 6.5C3.6 8.2 2 12 2 12s3.7 7 10 7a10.7 10.7 0 0 0 4.2-.8"/><path d="M10 10a3 3 0 0 0 4 4"/></svg>
+      </button>
+    </div>
+    <div class="password-hint" id="passcodeState" aria-live="polite">Mật khẩu đang ẩn · Nhấn con mắt có gạch chéo để xem</div>
+    <button class="btn btn-primary login-btn" id="loginButton" type="submit">Truy cập không gian làm việc <span>→</span></button>
+    <button class="login-check" type="button" id="healthCheck">Kiểm tra kết nối máy chủ</button>
+    <div class="client-diagnostic" id="clientDiagnostic" aria-live="polite">Đang kiểm tra JavaScript giao diện...</div>
+    <div class="login-note" id="loginError" role="status" aria-live="polite"></div><div class="login-footer">Bảo mật truy cập theo vai trò · SMEE <small style="display:block;margin-top:8px">BUILD 7.8.3</small></div>
+  </form></div>
+</div>
+<script>
+/* BUILD 7.8.3: Nút xem/ẩn mật khẩu độc lập với Scripts.html.
+   Chặn việc form gửi theo cách mặc định nếu mã giao diện chưa khởi tạo. */
+(function () {
+  'use strict';
+  var btn = document.getElementById('togglePassword');
+  var field = document.getElementById('passcode');
+  var form = document.getElementById('loginForm');
+  var status = document.getElementById('loginError');
+  function errorMessage(txt) {
+    if (status) { status.textContent = txt; status.classList.remove('is-info'); }
+  }
+  if (btn && field) {
+    window.SMEE_EYE_READY = true;
+    btn.addEventListener('click', function (event) {
+      event.preventDefault();
+      var visible = field.type === 'password';
+      field.type = visible ? 'text' : 'password';
+      btn.classList.toggle('is-visible', visible);
+      btn.setAttribute('aria-pressed', String(visible));
+      btn.setAttribute('aria-label', visible ? 'Ẩn mật khẩu' : 'Hiện mật khẩu');
+      btn.setAttribute('title', visible ? 'Ẩn mật khẩu' : 'Hiện mật khẩu');
+      var hint = document.getElementById('passcodeState');
+      if (hint) hint.textContent = visible ? 'Mật khẩu đang HIỂN THỊ · Nhấn con mắt để ẩn' : 'Mật khẩu đang ẩn · Nhấn con mắt có gạch chéo để xem';
+    });
+  }
+  if (form) {
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      if (!window.SMEE_CLIENT_READY) {
+        if (window.SMEE_SHOW_DIAG) window.SMEE_SHOW_DIAG(true);
+        else errorMessage('Giao diện chưa được khởi tạo. Kiểm tra lỗi JavaScript trước khi triển khai lại.');
+      }
+    }, true);
+  }
+  function clientDiagnostics(shouldShowError) {
+    var stage = String(window.SMEE_SCRIPTS_STAGE || 'CHUA_THUC_THI');
+    var css = '';
+    try { css = getComputedStyle(document.documentElement).getPropertyValue('--smee-style-build').trim(); }
+    catch (_) {}
+    var statusText = 'Scripts: ' + stage + ' | Styles: ' + (css || 'không thấy dấu phiên bản');
+    var diagnostic = document.getElementById('clientDiagnostic');
+    if (diagnostic) { diagnostic.textContent = statusText; diagnostic.classList.toggle('is-error', !window.SMEE_CLIENT_READY); }
+    if (shouldShowError && !window.SMEE_CLIENT_READY) {
+      var detail = String(window.SMEE_CLIENT_ERROR || 'Chưa chạy đến bước gắn sự kiện đăng nhập.');
+      errorMessage('Lỗi khởi tạo giao diện: ' + detail + ' [' + statusText + ']. Hãy chụp dòng này để xác định nguyên nhân.');
+    }
+  }
+  window.addEventListener('error', function (event) {
+    if (window.SMEE_CLIENT_READY) return;
+    window.SMEE_CLIENT_ERROR = event && event.message ? String(event.message).slice(0,280) : 'JavaScript báo lỗi không rõ thông tin.';
+    clientDiagnostics(true);
+  });
+  window.addEventListener('unhandledrejection', function (event) {
+    if (window.SMEE_CLIENT_READY) return;
+    var reason = event && event.reason;
+    window.SMEE_CLIENT_ERROR = 'Promise: ' + String(reason && reason.message || reason || 'không rõ').slice(0,240);
+    clientDiagnostics(true);
+  });
+  window.SMEE_SHOW_DIAG = clientDiagnostics;
+  setTimeout(function () { clientDiagnostics(!window.SMEE_CLIENT_READY); }, 1700);
+  setTimeout(function () { if (!window.SMEE_CLIENT_READY) clientDiagnostics(true); }, 6000);
+})();
+</script>
+<div id="application" class="app-shell hidden">
+  <aside class="sidebar" id="sidebar"><div class="sidebar-head"><div class="product-brand"><span class="smee-brand-image"><img src="https://smee.vn/wp-content/uploads/2026/03/Logo-SMEE-e1772561901206.png" alt="Logo SMEE" loading="eager"></span></div><button class="mobile-close" id="closeSidebar" aria-label="Đóng menu">×</button></div>
+  <div class="sidebar-label">KHÔNG GIAN LÀM VIỆC</div><nav id="navList" class="nav-list">
+<button data-view="dashboard" class="nav-item active"><svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span class="nav-text">Tổng quan</span></button>
+    <button data-view="projects" class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.7-.9l-.8-1.2A2 2 0 0 0 7.9 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/><path d="M8 10v4M12 10v2M16 10v6"/></svg><span class="nav-text">Dự án</span></button>
+    <button data-view="tasks" class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 17 2 2 4-4M3 7l2 2 4-4M13 6h8M13 12h8M13 18h8"/></svg><span class="nav-text">Công việc</span></button>
+    <button data-view="adhoc" class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg><span class="nav-text">Việc bổ sung</span></button>
+    <div class="nav-group" data-group="analysis"><button type="button" class="nav-item nav-group-btn" data-action="navToggle" data-id="analysis" aria-expanded="false"><svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg><span class="nav-text">Phân tích</span><span class="nav-badge nav-group-badge" hidden></span><span class="nav-caret" aria-hidden="true">▸</span></button><div class="nav-sub">
+      <button data-view="gantt" class="nav-item nav-child"><svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 7h8M9 12h9M7 17h6"/></svg><span class="nav-text">Kế hoạch dự án</span></button>
+      <button data-view="delays" class="nav-item nav-child"><svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 17-8.5-8.5-5 5L2 7"/><path d="M16 17h6v-6"/></svg><span class="nav-text">Phân tích chậm trễ</span></button>
+      <button data-view="products" class="nav-item nav-child"><svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8 12 3 3 8v8l9 5 9-5V8z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg><span class="nav-text">Kết quả công việc</span></button>
+    </div></div>
+    <div class="nav-group" data-group="reports"><button type="button" class="nav-item nav-group-btn" data-action="navToggle" data-id="reports" aria-expanded="false"><svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg><span class="nav-text">Báo cáo</span><span class="nav-badge nav-group-badge" hidden></span><span class="nav-caret" aria-hidden="true">▸</span></button><div class="nav-sub">
+      <button data-view="reports" class="nav-item nav-child"><svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 18v-2M12 18v-5M16 18v-3"/></svg><span class="nav-text">Báo cáo dự án</span></button>
+      <button data-view="bgd" class="nav-item nav-child" style="display:none"><svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg><span class="nav-text">Báo cáo Giám đốc</span></button>
+      <button data-view="kdAcc" class="nav-item nav-child" style="display:none"><svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg><span class="nav-text">Báo cáo Account</span></button>
+      <button data-view="kdSale" class="nav-item nav-child" style="display:none"><svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg><span class="nav-text">Báo cáo Sale</span></button>
+    </div></div>
+    <button data-view="proposals" class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg><span class="nav-text">Đề xuất</span><span class="nav-badge" id="propBadge" hidden></span></button>
+    <button data-view="people" class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="nav-text">Nhân sự</span></button>
+    <button data-view="settings" class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2Z"/><circle cx="12" cy="12" r="3"/></svg><span class="nav-text">Thiết lập</span></button>
+  </nav><div class="sidebar-foot sidebar-build">SMEE · BUILD 7.8.3</div></aside>
+  <div class="main-area"><header class="topbar"><div class="top-left"><button id="toggleSidebar" class="menu-toggle" aria-label="Mở menu">☰</button><span class="breadcrumb">KHÔNG GIAN LÀM VIỆC <span>/</span> <b id="currentViewName">Tổng quan</b></span></div><div class="top-right"><span id="demoModeTag" class="demo-mode-tag hidden">CHẠY THỬ · CHỦ SỞ HỮU · BUILD 7.8.3</span><span class="live-dot"></span><span class="today-label" id="currentDate"></span><span class="top-divider"></span><div class="avatar" id="topAvatar">S</div><div class="user-meta"><b id="topUser">Nhân viên</b><small id="topRole"></small></div><button id="logoutBtn" class="outline-icon" title="Đăng xuất" aria-label="Đăng xuất">⎋</button></div></header>
+    <main id="appContent" class="app-content"><div class="boot-screen"><div class="boot-spinner" aria-hidden="true"></div><p>Đang kết nối dữ liệu SMEE...</p><small>SMEE BUILD 7.8.3 · Đang nạp dữ liệu sau đăng nhập</small></div></main>
+  </div>
+</div>
+<div id="modalRoot"></div><div id="toastRoot" class="toast-root" role="status" aria-live="polite"></div>
+<?!= include('Scripts'); ?>
+</body></html>
