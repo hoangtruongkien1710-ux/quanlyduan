@@ -100,30 +100,30 @@ Kế hoạch định kỳ nằm trong các cột của CongViec, như bản hi�
 - [x] apiSaveProject, apiDeleteProject
 - [x] apiSaveTask, apiDeleteTask, apiBulkAssign, apiTaskHistory, apiAddStatus, apiReassignTasks, apiCreateAdhoc
 - [x] apiSaveSubTask, apiDeleteSubTask
-- [ ] apiSaveTime, apiDeleteTime, apiConfirmPlans, apiApproveTime
-- [ ] apiSaveDay, apiSaveDayReport, apiSaveProjectDay, apiLinkProjectDay, apiDeleteDay, apiSaveDailyNote
+- [x] apiSaveTime, apiDeleteTime, apiConfirmPlans, apiApproveTime
+- [x] apiSaveDay, apiSaveDayReport, apiSaveProjectDay, apiLinkProjectDay, apiDeleteDay, apiSaveDailyNote
 - [x] apiSaveBlocker, apiResumeBlocker, apiDeleteBlocker
 
 ### Giai đoạn 3 — Kết quả công việc
-- [ ] apiSaveProducts, apiDeleteProduct, apiSaveProductTypes, apiAddProductTypes
+- [x] apiSaveProducts, apiDeleteProduct, apiSaveProductTypes, apiAddProductTypes
 
 ### Giai đoạn 4 — Kế hoạch dự án, Phân tích chậm trễ, Báo cáo
-- [ ] Kiểm tra các màn chỉ đọc dữ liệu (Kế hoạch dự án, Phân tích chậm trễ, Báo cáo dự án, Báo cáo ngày)
+- [x] Kiểm tra các màn chỉ đọc dữ liệu (Kế hoạch dự án, Phân tích chậm trễ, Báo cáo dự án, Báo cáo ngày)
 
 ### Giai đoạn 5 — Báo cáo Account / Sale, Báo cáo Giám đốc, Telegram
-- [ ] apiSaveKd, apiDeleteKd, apiKdComment
-- [ ] apiBgdSubmit, apiBgdReview, apiBgdMeetCreate, apiBgdMeetUpdate, apiBgdTaskCreate, apiBgdTaskUpdate, apiBgdTaskDelete, apiBgdMeetDelete, apiBgdHistory
-- [ ] apiBgdTgInfo, apiBgdTgSave, apiBgdTgTest (Telegram qua UrlFetchApp tương thích)
+- [x] apiSaveKd, apiDeleteKd, apiKdComment
+- [x] apiBgdSubmit, apiBgdReview, apiBgdMeetCreate, apiBgdMeetUpdate, apiBgdTaskCreate, apiBgdTaskUpdate, apiBgdTaskDelete, apiBgdMeetDelete, apiBgdHistory
+- [x] apiBgdTgInfo, apiBgdTgSave, apiBgdTgTest (Telegram qua UrlFetchApp tương thích) — chờ nhập mã bot để gửi thử thật
 
 ### Giai đoạn 6 — Đề xuất, Nhân sự, Thiết lập, Nhập / xuất Excel
-- [ ] apiPropose, apiSaveProposal, apiReviewProposal
-- [ ] apiSaveReadyPct, apiSaveWorkDays, apiSaveHoliday, apiDeleteHoliday, apiAddVnHolidays
-- [ ] apiDemoInfo, apiDemoDelete, apiWipeInfo, apiWipeAll (sao lưu = bản chụp JSON trong database), apiCleanColumns (không cần, bỏ)
-- [ ] apiImportRows (Excel); apiGsheetTabs, apiGsheetPreview, apiImportGsheet, apiImportOwner, apiImportHistory, apiImportFromSource, apiTaoFileMau (phụ thuộc Google, cần quyết định: bỏ hoặc thay)
+- [x] apiPropose, apiSaveProposal, apiReviewProposal
+- [x] apiSaveReadyPct, apiSaveWorkDays, apiSaveHoliday, apiDeleteHoliday, apiAddVnHolidays
+- [x] apiDemoInfo, apiDemoDelete, apiWipeInfo, apiWipeAll (sao lưu = bản chụp JSON trong database), apiCleanColumns (không cần, bỏ)
+- [x] apiImportRows (Excel) chạy được. Chưa hỗ trợ (báo lỗi rõ): apiGsheetTabs, apiGsheetPreview, apiImportGsheet, apiImportOwner, apiImportHistory, apiImportFromSource, apiTaoFileMau (phụ thuộc Google, cần quyết định: bỏ hoặc thay)
 
 ### Giai đoạn 7 — Kiểm thử, triển khai
-- [ ] Test từng vai trò (Giám đốc, Trợ lý GĐ, Account, Sale, nhân viên)
-- [ ] Đo tốc độ
+- [x] Test từng vai trò (Giám đốc, Trợ lý GĐ, Account, Sale, nhân viên) — tests/e2e-phase2.mjs, tests/e2e-rest.mjs
+- [x] Đo tốc độ (trên máy: đăng nhập ~50 ms, lưu ~20 ms, tải dữ liệu ~10 ms)
 - [ ] Dockerfile cho app, sao lưu database hằng ngày
 - [ ] Triển khai (sau khi chốt hosting)
 
@@ -152,3 +152,4 @@ npm run dev       # mở http://localhost:3100
 - 23/11/2026: **Chốt**: giữ Google Sheet nhân sự làm nguồn gốc; app đồng bộ về bảng Staff qua Google Sheets API (service account, quyền Người xem), lúc khởi động, 10 phút / lần và nút "Đồng bộ nhân sự". Chỉ đọc các cột cần dùng, không đọc cột lương, mã đăng nhập mã hóa. Bỏ việc "màn quản lý nhân sự mới"; thêm việc tạo service account vào Giai đoạn 1.
 - 23/11/2026: **Xong Giai đoạn 1.** PostgreSQL 16 chạy bằng Docker (container smee_qlda_db, cổng 5432). Prisma: 18 bảng APP_* + Staff + AppProperty, sinh tự động từ Config.js. Lớp tương thích Apps Script chạy nguyên Code.js (mỗi lần gọi một ngữ cảnh mới; dữ liệu trong bộ nhớ, lưu các tab đã đổi xuống PostgreSQL). Trang chính giữ nguyên giao diện, thêm lớp thay google.script.run. Đăng nhập bằng mã mã hoá (HMAC-SHA256 với APP_SECRET) trong bảng Staff. Đã thử: màn đăng nhập → vào app thấy menu + Tổng quan, không lỗi JS. Đo trên máy: đăng nhập 52 ms, lưu dự án / công việc 21 ms, tải dữ liệu 10 ms. Đồng bộ nhân sự đã viết, chờ service account.
 - 23/11/2026: **Giai đoạn 2** — test e2e (tests/e2e-phase2.mjs) 31/31 đạt: dự án, công việc, phân quyền nhân viên (chỉ thấy / sửa việc của mình), việc bổ sung, đầu việc, giờ làm theo ngày, giờ trực tiếp vào dự án, báo cáo ngày, vướng mắc, đăng xuất. Engine tự thêm cấu hình mặc định (phần cần của setupApp). Dữ liệu nạp lại đúng sau khi khởi động lại máy chủ.
+- 23/11/2026: **Giai đoạn 3–6** — test e2e (tests/e2e-rest.mjs) 35/35 đạt: kết quả công việc (chống lưu trùng, chặn sai người), giờ làm trực tiếp vào dự án + gắn việc, Báo cáo Account / Sale (phân quyền, nhận xét), Báo cáo Giám đốc (gửi, đánh giá, cuộc họp, nhiệm vụ + lịch sử, Telegram), đề xuất (chặn nhân viên tạo dự án), thiết lập, ngày nghỉ, mục Dữ liệu. **Giai đoạn 4**: mở cả 14 màn với dữ liệu thật, không lỗi JS. Nhập Excel chạy được. Các chức năng gắn với Google (nhập từ Google Sheet, file mẫu trên Drive) báo lỗi rõ ràng, chờ quyết định bỏ / thay.
