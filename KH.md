@@ -3,7 +3,7 @@
 ## 1. Mục tiêu
 - Giữ nguyên **giao diện** và **tính năng** của app Apps Script hiện tại (BUILD 7.8.3): menu, màn hình, popup, phân quyền, báo cáo, Excel, Telegram.
 - Nhanh hơn rõ rệt: đăng nhập, lưu, mở báo cáo dưới khoảng 1 giây.
-- Dữ liệu lưu ở PostgreSQL, không còn phụ thuộc Google Sheets.
+- Dữ liệu công việc lưu ở PostgreSQL, không còn phụ thuộc Google Sheets. Riêng **danh sách nhân sự vẫn lấy từ Google Sheet nhân sự hiện có** (nguồn gốc), đồng bộ về app.
 - Không chuyển dữ liệu cũ, vì Sheet đã xóa trắng. App mới bắt đầu với dữ liệu trống.
 - Làm trên máy local với Docker trước, chưa triển khai lên mạng.
 
@@ -22,7 +22,7 @@
    - `SpreadsheetApp`: các "tab" là bảng dữ liệu trong bộ nhớ, nạp từ PostgreSQL khi máy chủ khởi động.
    - Sau mỗi lần gọi có ghi dữ liệu, các bảng đã đổi được lưu xuống PostgreSQL qua Prisma, trong một transaction.
    - `CacheService`, `LockService` (hàng đợi tuần tự), `PropertiesService` (bảng AppProperty), `Utilities`, `UrlFetchApp` (Telegram).
-   - Sheet nhân sự được thay bằng bảng **Staff**.
+   - Nhân sự: app đồng bộ từ Google Sheet nhân sự về bảng **Staff** (xem mục 5a). Đăng nhập dùng bản trong database nên nhanh.
 3. Nhờ vậy, mọi quy tắc nghiệp vụ và phân quyền giữ đúng như bản đang chạy. Sau này có thể viết lại từng phần sang Prisma thuần nếu cần.
 
 ## 4. Cấu trúc thư mục
@@ -30,7 +30,7 @@ Thư mục dự án: `D:\WEBSITE SMEE\WEB NỘI BỘ\Quản lý dự án và cô
 ```
 Quản lý dự án và công việc/
   docker-compose.yml        # postgres:16
-  .env.example              # DATABASE_URL, ADMIN_LOGIN_CODE (không có giá trị thật)
+  .env.example              # DATABASE_URL, ADMIN_LOGIN_CODE, khóa service account Google (không có giá trị thật)
   prisma/schema.prisma      # sinh tự động từ CFG.FIELDS + bảng Staff, AppProperty
   legacy/                   # bản sao Code.js, Config.js, Index/Styles/Scripts.html (nguồn từ Apps Script)
   lib/engine/               # lớp tương thích Apps Script (sheet trong bộ nhớ, cache, lock, properties…)
@@ -38,6 +38,7 @@ Quản lý dự án và công việc/
   app/api/rpc/[fn]/route.ts # gọi hàm máy chủ theo tên
   scripts/gen-schema.mjs    # sinh schema.prisma từ Config.js
   scripts/seed.mjs          # tạo tài khoản quản trị từ biến môi trường
+  lib/staff-sync.ts         # đồng bộ Google Sheet nhân sự → bảng Staff
   KH.md, README.md
 ```
 
@@ -69,6 +70,14 @@ Mỗi tab APP_* là một bảng. Mọi cột đều kiểu chữ, giống Sheet
 
 Kế hoạch định kỳ nằm trong các cột của CongViec, như bản hiện tại.
 
+### 5a. Nhân sự — đồng bộ từ Google Sheet (đã chốt)
+- **Nguồn gốc giữ nguyên**: Google Sheet nhân sự hiện tại (tab nhân viên). Thêm / sửa / cho nghỉ nhân viên vẫn làm trên Sheet đó như bây giờ.
+- **Cách lấy**: app gọi Google Sheets API bằng một **tài khoản dịch vụ (service account)** của Google Cloud. Anh/chị chia sẻ sheet nhân sự cho email của tài khoản này với quyền **Người xem**. Khóa của tài khoản đặt trong file `.env`, không đưa lên git.
+- **Khi nào đồng bộ**: lúc máy chủ khởi động, tự động khoảng **10 phút / lần**, và khi bấm nút **"Đồng bộ nhân sự"** (màn Nhân sự / Thiết lập). Nhân viên mới thêm trên Sheet sẽ đăng nhập được sau lần đồng bộ kế tiếp.
+- **Chỉ đọc các cột app dùng, tìm theo tên cột**: họ tên, mã NV, email, chức vụ, phòng ban, tình trạng làm việc, cột mã đăng nhập ("Pass App Dự án"). **Không bao giờ đọc hay lưu các cột lương.**
+- **Mã đăng nhập** được mã hóa (scrypt) ngay khi đồng bộ. Mã gốc không lưu vào database, không ghi ra log, không gửi về trình duyệt.
+- App **chỉ đọc**, không ghi gì vào sheet nhân sự.
+
 ## 6. Phân quyền (giữ nguyên)
 - **Quản lý**: Giám đốc, Trợ lý GĐ, Account, admin. Xem và sửa toàn bộ.
 - **Nhân viên**: chỉ thấy và sửa dữ liệu của mình. Máy chủ kiểm tra ở từng hàm.
@@ -82,6 +91,8 @@ Kế hoạch định kỳ nằm trong các cột của CongViec, như bản hi�
 - [ ] Lớp tương thích Apps Script (sheet trong bộ nhớ ↔ PostgreSQL, cache, lock, properties)
 - [ ] Trang HTML giữ nguyên giao diện + shim google.script.run → /api/rpc
 - [ ] Bảng Staff + seed tài khoản quản trị (mã lấy từ biến môi trường) để chạy thử khi chưa nối Google Sheet nhân sự
+- [ ] Hướng dẫn anh/chị tạo service account Google Cloud + chia sẻ sheet nhân sự (quyền Người xem)
+- [ ] Đồng bộ nhân sự: Google Sheets API → bảng Staff (khi khởi động, 10 phút / lần, nút "Đồng bộ nhân sự"), mã hóa mã đăng nhập
 - [ ] apiKiemTraKetNoi, apiLogin, apiLogout, apiBootstrap, apiLoadSection
 - [ ] Hiện màn đăng nhập → vào app thấy menu và Tổng quan
 
@@ -109,7 +120,6 @@ Kế hoạch định kỳ nằm trong các cột của CongViec, như bản hi�
 - [ ] apiSaveReadyPct, apiSaveWorkDays, apiSaveHoliday, apiDeleteHoliday, apiAddVnHolidays
 - [ ] apiDemoInfo, apiDemoDelete, apiWipeInfo, apiWipeAll (sao lưu = bản chụp JSON trong database), apiCleanColumns (không cần, bỏ)
 - [ ] apiImportRows (Excel); apiGsheetTabs, apiGsheetPreview, apiImportGsheet, apiImportOwner, apiImportHistory, apiImportFromSource, apiTaoFileMau (phụ thuộc Google, cần quyết định: bỏ hoặc thay)
-- [ ] Kết nối Google Sheet nhân sự (cách A hoặc B ở mục 9) + nút "Đồng bộ nhân sự"
 
 ### Giai đoạn 7 — Kiểm thử, triển khai
 - [ ] Test từng vai trò (Giám đốc, Trợ lý GĐ, Account, Sale, nhân viên)
@@ -129,10 +139,8 @@ npm run dev       # mở http://localhost:3100
 ## 9. Rủi ro và quyết định còn mở
 - **Hosting**: Vercel + Neon/Supabase, hay máy chủ / VPS riêng chạy Docker? Lớp tương thích giữ dữ liệu trong bộ nhớ, nên hợp với **một máy chủ chạy liên tục** (VPS / Docker). Nếu dùng Vercel (serverless) sẽ cần đổi cách làm.
 - **Tên miền** (ví dụ app.smee.vn) và HTTPS.
-- **Nhân sự (CẦN CHỐT)**: danh sách nhân viên hiện được **lấy từ một Google Sheet nhân sự khác** (gồm họ tên, chức vụ, phòng ban, tình trạng, cột "Pass App Dự án"). Có 2 cách:
-  - **Cách A — Vẫn đọc trực tiếp Google Sheet đó**: app Next.js gọi Google Sheets API bằng một tài khoản dịch vụ (service account) được chia sẻ quyền **chỉ xem** sheet nhân sự. Chỉ đọc các cột cần dùng, có lưu tạm vài phút. Thay đổi nhân sự trên Sheet có hiệu lực gần như ngay. Cần Internet và một khóa service account đặt trong `.env`.
-  - **Cách B — Đồng bộ về bảng Staff** (khuyến nghị): như cách A, nhưng app định kỳ (ví dụ 10 phút) và khi bấm nút "Đồng bộ nhân sự" sẽ chép họ tên, chức vụ, phòng ban, tình trạng về bảng Staff. Mã đăng nhập được **mã hóa** trước khi lưu. Đăng nhập nhanh và vẫn chạy được khi Google chậm; Sheet nhân sự vẫn là nơi quản lý gốc.
-  - Cả hai cách: app chỉ **đọc**, không ghi gì vào sheet nhân sự; không đọc các cột lương.
+- **Service account Google Cloud** (cần anh/chị làm, tôi sẽ hướng dẫn từng bước ở Giai đoạn 1): tạo dự án Google Cloud, bật Google Sheets API, tạo service account và tải khóa JSON, chia sẻ sheet nhân sự cho email service account với quyền Người xem.
+- **Nhân sự** (đã chốt): giữ Google Sheet nhân sự làm nguồn gốc, đồng bộ về bảng Staff (mục 5a). Nhân viên mới hoặc thay đổi trên Sheet có hiệu lực sau tối đa khoảng 10 phút, hoặc ngay khi bấm "Đồng bộ nhân sự".
 - **Các tính năng gắn với Google** (nhập từ Google Sheet, tạo file mẫu trên Drive, sao lưu sang Drive): bỏ hoặc thay bằng nhập Excel / sao lưu trong database.
 - **Telegram**: mã bot nhập lại trong Thiết lập, không chép từ code cũ.
 
@@ -141,3 +149,4 @@ npm run dev       # mở http://localhost:3100
 - 23/11/2026: Theo yêu cầu, chuyển thư mục vào `D:\WEBSITE SMEE\WEB NỘI BỘ` và đổi tên thành **Quản lý dự án và công việc** (giữ lịch sử git). Đang chờ duyệt kế hoạch trước khi làm Giai đoạn 1.
 - 23/11/2026: Cổng 3000 trên máy đã bị chương trình khác dùng → app chạy ở **cổng 3100** (http://localhost:3100). PostgreSQL dùng cổng 5432 (đang trống).
 - 23/11/2026: Ghi nhận: nhân sự đang lấy từ Google Sheet nhân sự riêng → thêm 2 phương án (đọc trực tiếp / đồng bộ về bảng Staff) ở mục 9, chờ chốt.
+- 23/11/2026: **Chốt**: giữ Google Sheet nhân sự làm nguồn gốc; app đồng bộ về bảng Staff qua Google Sheets API (service account, quyền Người xem), lúc khởi động, 10 phút / lần và nút "Đồng bộ nhân sự". Chỉ đọc các cột cần dùng, không đọc cột lương, mã đăng nhập mã hóa. Bỏ việc "màn quản lý nhân sự mới"; thêm việc tạo service account vào Giai đoạn 1.
