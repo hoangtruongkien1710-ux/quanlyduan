@@ -26,8 +26,9 @@
 3. Nhờ vậy, mọi quy tắc nghiệp vụ và phân quyền giữ đúng như bản đang chạy. Sau này có thể viết lại từng phần sang Prisma thuần nếu cần.
 
 ## 4. Cấu trúc thư mục
+Thư mục dự án: `D:\WEBSITE SMEE\WEB NỘI BỘ\Quản lý dự án và công việc`
 ```
-SMEE_NEXT/
+Quản lý dự án và công việc/
   docker-compose.yml        # postgres:16
   .env.example              # DATABASE_URL, ADMIN_LOGIN_CODE (không có giá trị thật)
   prisma/schema.prisma      # sinh tự động từ CFG.FIELDS + bảng Staff, AppProperty
@@ -134,3 +135,4 @@ npm run dev       # mở http://localhost:3000
 
 ## 10. Nhật ký tiến độ
 - 23/11/2026: Kiểm tra môi trường: Docker 29.8, Compose 5.5, Node 26, npm 11. Tạo thư mục SMEE_NEXT, cài Next.js 15.5.4, Prisma 6.16.2. Viết KH.md.
+- 23/11/2026: Theo yêu cầu, chuyển thư mục vào `D:\WEBSITE SMEE\WEB NỘI BỘ` và đổi tên thành **Quản lý dự án và công việc** (giữ lịch sử git). Đang chờ duyệt kế hoạch trước khi làm Giai đoạn 1.
