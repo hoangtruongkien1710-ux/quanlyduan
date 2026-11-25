@@ -853,5 +853,17 @@ body.is-busy{cursor:progress}button.is-loading,#saveModal:disabled{opacity:.8;cu
 .sp-month{color:#8393a9;font-size:10px;font-weight:600;margin-left:2px}.sp-month-sum{margin:4px 0 8px;color:#475569}
 .sp-mhead td{background:#f4f7fc;font-weight:700;color:#235bd0;font-size:12px;padding:6px 12px}
 .copy-again{display:flex;gap:8px;align-items:center;margin-top:10px;font-weight:600;color:#235bd0}
-</style>
 
+/* 2026-11-25 — Công việc: tên dự án ngang tiêu đề, nhóm theo hạng mục, nút thao tác hàng ngang dưới tên việc, Xem thêm link */
+.view-header h1 .h1-proj{color:#235bd0}
+.task-table .hm-row td{background:#f7f9fd;padding:7px 14px 7px 30px;border-top:1px solid #e6ecf6;border-bottom:1px solid #e6ecf6}
+.task-table .hm-row:hover td{background:#eef3fb}
+.task-table .hm-row b{font-size:11.5px;color:#235bd0}
+.task-table td .row-actions.task-acts{display:flex;flex-wrap:nowrap;justify-content:flex-start;gap:5px;max-width:none;margin:7px 0 0}
+.task-table .task-acts .icon-btn{width:28px;height:28px;min-width:28px}
+.task-table .task-acts .icon-btn svg{width:14px;height:14px}
+@media(max-width:700px){.task-table td .row-actions.task-acts{flex-wrap:wrap}}
+.link-more{display:block;margin-top:4px;padding:0;border:0;background:none;color:#235bd0;font:inherit;font-size:11px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+/* Cột thao tác các bảng khác: nút xếp hàng ngang, không dồn dọc */
+.data-table td:last-child>.row-actions{display:flex;flex-wrap:nowrap;max-width:none}
+</style>
