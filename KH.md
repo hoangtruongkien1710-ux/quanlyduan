@@ -144,6 +144,13 @@ npm run dev       # mở http://localhost:3100
 - **Các tính năng gắn với Google** (đã chốt): chỉ nhập Excel; file mẫu Excel tạo trên trình duyệt; sao lưu khi làm trắng là bản chụp trong database.
 - **Telegram**: mã bot nhập lại trong Thiết lập, không chép từ code cũ.
 
+## 9a. Cách làm việc tiết kiệm (token)
+- Mỗi việc lớn mở **cuộc trò chuyện mới**, bắt đầu bằng: "Đọc CLAUDE.md và KH.md (Nhật ký cuối) rồi làm …".
+- Gom nhiều yêu cầu nhỏ vào **một tin nhắn**; nêu rõ màn hình / nút / kết quả mong muốn.
+- Gửi **chữ** (đoạn lỗi, tên nút) thay vì ảnh khi có thể.
+- Việc đơn giản (đổi chữ, nhãn, màu) dùng model nhỏ hơn; việc phức tạp mới cần model lớn.
+- Thay đổi nhỏ chỉ chạy test liên quan; sau mỗi thay đổi ghi 1 dòng Nhật ký để phiên sau không phải dò lại.
+
 ## 10. Nhật ký tiến độ
 - 23/11/2026: Kiểm tra môi trường: Docker 29.8, Compose 5.5, Node 26, npm 11. Tạo thư mục SMEE_NEXT, cài Next.js 15.5.4, Prisma 6.16.2. Viết KH.md.
 - 23/11/2026: Theo yêu cầu, chuyển thư mục vào `D:\WEBSITE SMEE\WEB NỘI BỘ` và đổi tên thành **Quản lý dự án và công việc** (giữ lịch sử git). Đang chờ duyệt kế hoạch trước khi làm Giai đoạn 1.

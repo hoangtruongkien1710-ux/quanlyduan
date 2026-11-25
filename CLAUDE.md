@@ -28,7 +28,28 @@
   - Giả lập Web App nhân sự: `tests/mock-staff-webapp.mjs` (cổng 3199, dữ liệu giả).
 - Nếu cổng 3100 đang bận: kiểm tra trước là ai đang dùng. Thường là app anh/chị đang chạy, **không tắt máy chủ của người dùng**.
 
+## Lưu ý kỹ thuật kế thừa từ bản Apps Script
+- Bảng luôn đọc / ghi **theo tên cột** (`list_`, `append_`, `update_` với `BY_HEADER_`), không theo vị trí cột.
+- Ngày giờ được chuẩn hoá thành chữ `yyyy-MM-dd` / `yyyy-MM-ddTHH:mm` (`normDt_`, `DT_FIELDS_` trong Code.js). Giữ đúng định dạng này khi ghi.
+- Với thay đổi nhỏ: chỉ chạy bài test liên quan (hoặc gọi đúng API đó), không chạy lại toàn bộ.
+
+## Đồng bộ nhân sự (Apps Script)
+- File `dongbonhansu.gs` (nội dung = `tools/dong-bo-nhan-su.gs`) nằm trong dự án Apps Script của Sheet nhân sự, cạnh `Mã.gs` (nhắc chấm công Telegram). **Không đụng Mã.gs.** Sửa .gs thì phải Triển khai → Quản lý bản triển khai → Phiên bản mới.
+- `.env` cần STAFF_SYNC_URL / STAFF_SYNC_KEY / STAFF_HASH_KEY. **Không đọc giá trị Sheet nhân sự** ngoài các cột app dùng.
+
+## Quyết định đã chốt
+- Chỉ nhập Excel (có "Tải file mẫu Excel"); không nhập từ Google Sheet / Drive.
+- Telegram để sau (chưa cấu hình mã bot).
+- Tên gọi giao diện: "Đầu việc", "Việc bổ sung", menu "Báo cáo Account" (không phải "BC Account & Sale"); bộ lọc Phòng ban → Nhân viên.
+- Phân quyền: nhân viên chỉ thấy việc mình phụ trách; chỉ Account / Trợ lý GĐ / Giám đốc được tạo dự án mới; Báo cáo Giám đốc: nhập = Tổng GĐ / GĐ / Trợ lý GĐ, đánh giá = Tổng GĐ / GĐ.
+
+## Bảo mật
+- Không in / commit: `.env`, khoá Google (`google-key.json`, `google-service-account.json`), SYNC_KEY / HASH_KEY, mã đăng nhập, cột lương / Password / số điện thoại của Sheet nhân sự.
+- Hỏi trước khi làm thao tác không hoàn tác được: Làm trắng dữ liệu, xoá dữ liệu demo, xoá database, tắt máy chủ người dùng đang chạy.
+- Không triển khai / đẩy code ra ngoài (server, GitHub) khi chưa được yêu cầu.
+
 ## Quy ước làm việc
+- Đầu phiên: đọc CLAUDE.md + mục Nhật ký tiến độ cuối của KH.md. Trả lời bằng tiếng Việt.
 - Giao diện và thông báo bằng tiếng Việt. Giữ nguyên phân quyền: nhân viên chỉ thấy / sửa dữ liệu của mình; quản lý = Giám đốc, Trợ lý GĐ, Account; máy chủ luôn kiểm tra quyền.
 - Mỗi bước xong: commit git (tiếng Việt không dấu), **ghi thêm 1 dòng vào mục "Nhật ký tiến độ" của KH.md**, đánh dấu ô `[x]` tương ứng.
 - Báo cáo ngắn gọn; không chụp màn hình nếu đọc chữ là đủ.
