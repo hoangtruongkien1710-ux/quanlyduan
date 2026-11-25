@@ -28,6 +28,13 @@
   - Giả lập Web App nhân sự: `tests/mock-staff-webapp.mjs` (cổng 3199, dữ liệu giả).
 - Nếu cổng 3100 đang bận: kiểm tra trước là ai đang dùng. Thường là app anh/chị đang chạy, **không tắt máy chủ của người dùng**.
 
+## Quy trình (local → GitHub → VPS)
+- Kho code: https://github.com/hoangtruongkien1710-ux/quanlyduan.git (nhánh main). App chính thức đang chạy trên **VPS** của anh/chị.
+- Sửa và kiểm tra ở **local** trước: `npm.cmd run dev` → http://localhost:3100 (database local riêng, không đụng dữ liệu VPS).
+- Xong thì commit ở local. **Anh/chị tự push** lên GitHub và tự cập nhật VPS (Claude không push, không đụng VPS nếu chưa được yêu cầu).
+- Trên VPS: kéo code mới, `npm install` (khi đổi thư viện), **`npx prisma migrate deploy`** (khi có migration mới), build và khởi động lại app.
+- VPS có file **.env riêng**: không bao giờ commit .env (local hay VPS).
+
 ## Lưu ý kỹ thuật kế thừa từ bản Apps Script
 - Bảng luôn đọc / ghi **theo tên cột** (`list_`, `append_`, `update_` với `BY_HEADER_`), không theo vị trí cột.
 - Ngày giờ được chuẩn hoá thành chữ `yyyy-MM-dd` / `yyyy-MM-ddTHH:mm` (`normDt_`, `DT_FIELDS_` trong Code.js). Giữ đúng định dạng này khi ghi.

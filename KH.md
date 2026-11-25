@@ -151,6 +151,13 @@ npm run dev       # mở http://localhost:3100
 - Việc đơn giản (đổi chữ, nhãn, màu) dùng model nhỏ hơn; việc phức tạp mới cần model lớn.
 - Thay đổi nhỏ chỉ chạy test liên quan; sau mỗi thay đổi ghi 1 dòng Nhật ký để phiên sau không phải dò lại.
 
+## 9b. Quy trình (local → GitHub → VPS)
+- Kho code: https://github.com/hoangtruongkien1710-ux/quanlyduan.git (nhánh main). App chính thức đang chạy trên **VPS** của anh/chị.
+- Sửa và kiểm tra ở **local** trước: `npm.cmd run dev` → http://localhost:3100 (database local riêng, không đụng dữ liệu VPS).
+- Xong thì commit ở local. **Anh/chị tự push** lên GitHub và tự cập nhật VPS (Claude không push, không đụng VPS nếu chưa được yêu cầu).
+- Trên VPS: kéo code mới, `npm install` (khi đổi thư viện), **`npx prisma migrate deploy`** (khi có migration mới), build và khởi động lại app.
+- VPS có file **.env riêng**: không bao giờ commit .env (local hay VPS).
+
 ## 10. Nhật ký tiến độ
 - 23/11/2026: Kiểm tra môi trường: Docker 29.8, Compose 5.5, Node 26, npm 11. Tạo thư mục SMEE_NEXT, cài Next.js 15.5.4, Prisma 6.16.2. Viết KH.md.
 - 23/11/2026: Theo yêu cầu, chuyển thư mục vào `D:\WEBSITE SMEE\WEB NỘI BỘ` và đổi tên thành **Quản lý dự án và công việc** (giữ lịch sử git). Đang chờ duyệt kế hoạch trước khi làm Giai đoạn 1.
@@ -165,3 +172,4 @@ npm run dev       # mở http://localhost:3100
 - 23/11/2026: **Đổi cách lấy nhân sự (theo yêu cầu): Web App Apps Script** thay cho service account. tools/dong-bo-nhan-su.gs — dự án Apps Script MỚI, độc lập (không đụng project đang gắn với Sheet có Mã.gs), mở Sheet nhân sự theo ID, chỉ đọc các cột cần dùng, mã đăng nhập mã hoá HMAC-SHA256 (HASH_KEY) ngay trong Google, khoá SYNC_KEY so sánh thời gian hằng định; hàm caiDat() tạo 2 khoá. App: STAFF_SYNC_URL / STAFF_SYNC_KEY / STAFF_HASH_KEY trong .env; đồng bộ khi khởi động, 10 phút / lần và nút "Đồng bộ nhân sự" (Thiết lập, chỉ quản lý). Đăng nhập nhận cả mã từ Sheet (HASH_KEY) và tài khoản seed (APP_SECRET). Service account vẫn dùng được làm dự phòng. Đã test bằng Web App giả lập + database thử riêng: đồng bộ 3 người, đăng nhập đúng vai trò, chặn người nghỉ việc / sai mã, nhân viên không bấm được đồng bộ. Hướng dẫn: tools/HUONG_DAN_DONG_BO_NHAN_SU.md.
 - 23/11/2026: **Đồng bộ nhân sự chạy thật.** Anh/chị đã thêm file dongbonhansu.gs vào dự án Apps Script của Sheet nhân sự (giữ nguyên Mã.gs), triển khai Web App, điền URL + 2 khoá vào .env. Kết quả: 27 nhân sự (20 đang làm, 7 nghỉ việc), 10 phòng ban, cả 27 có mã đăng nhập (đã mã hoá). Thêm instrumentation.ts để nạp dữ liệu + đồng bộ ngay khi máy chủ khởi động.
 - 25/11/2026: Thêm **CLAUDE.md** (kiến trúc, nơi sửa, cách chạy / test, quy ước) để các phiên làm việc sau đọc nhanh, tiết kiệm token. Cách dùng: mở cuộc trò chuyện mới → "Đọc CLAUDE.md và KH.md rồi làm …".
+- 25/11/2026: Anh/chị đã đẩy code lên GitHub (hoangtruongkien1710-ux/quanlyduan) và chạy được trên VPS. Từ giờ sửa / kiểm tra ở local trước rồi mới đẩy lên. Kiểm tra lịch sử git: .env, khoá Google, node_modules, .next không có trong git; không có chuỗi bí mật. Thêm mục Quy trình (CLAUDE.md, KH.md 9b).
