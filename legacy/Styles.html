@@ -866,4 +866,18 @@ body.is-busy{cursor:progress}button.is-loading,#saveModal:disabled{opacity:.8;cu
 .link-more{display:block;margin-top:4px;padding:0;border:0;background:none;color:#235bd0;font:inherit;font-size:11px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
 /* Cột thao tác các bảng khác: nút xếp hàng ngang, không dồn dọc */
 .data-table td:last-child>.row-actions{display:flex;flex-wrap:nowrap;max-width:none}
+/* 2026-11-25 — nút bút trước tên việc mở menu thao tác */
+.task-name-line{display:flex;align-items:flex-start;gap:8px}
+.task-name-line strong{flex:1;min-width:0}
+.task-table .act-toggle{width:26px;height:26px;min-width:26px;flex:none;margin-top:-3px}
+.task-table .act-toggle svg{width:14px;height:14px}
+.act-toggle.open{background:#235bd0;color:#fff;border-color:#235bd0}
+.act-menu{position:fixed;z-index:60;min-width:210px;background:#fff;border:1px solid #e0e7f1;border-radius:10px;box-shadow:0 12px 30px rgba(15,23,42,.18);padding:6px;display:flex;flex-direction:column;gap:2px}
+.act-menu .act-item{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;border:0;border-radius:7px;background:none;color:#1f3557;font:inherit;font-size:12.5px;text-align:left;cursor:pointer}
+.act-menu .act-item:hover,.act-menu .act-item:focus-visible{background:#eef3fb}
+.act-menu .act-item svg{width:16px;height:16px;flex:none}
+.act-menu .act-item.icon-danger{color:#c62828}.act-menu .act-item.icon-danger:hover{background:#fdecec}
+.act-menu .act-item.icon-alert{color:#b45309}
+.act-menu .act-sep{border:0;border-top:1px solid #eef1f6;margin:3px 2px}
+@media(max-width:700px){.act-menu{min-width:230px}.act-menu .act-item{min-height:42px;font-size:13.5px}.task-table .act-toggle{width:32px;height:32px;min-width:32px}}
 </style>

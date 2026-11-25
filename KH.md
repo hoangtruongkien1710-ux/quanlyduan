@@ -177,3 +177,4 @@ npm run dev       # mở http://localhost:3100
 - 2026-11-25: Man Cong viec: loc 1 du an thi ten du an hien to ngang chu Cong viec; bang nhom Du an -> Hang muc (gap/mo duoc, Chua co hang muc o cuoi); bo cot Thao tac, nut thao tac hang ngang duoi ten viec (dien thoai tu xuong dong); Link san pham >1 link: hien link dau + Xem them (N) mo popup tab Ket qua cong viec; cac bang khac: nut cot thao tac xep hang ngang (CSS). Kiem tra 3101 + DB thu, build dat.
 - 2026-11-25: Bang Cong viec: bo dong hang muc va 'N san pham · thang' duoi ten viec (da co nhom hang muc).
 - 2026-11-25: Dien thoai: nut thao tac duoi ten viec luon 1 hang (nut nho 26px).
+- 2026-11-25: Cong viec: gop nut thao tac thanh 1 nut but truoc ten viec, bam mo menu (Sua, Ghi gio lam, Ghi ket qua, Bao vuong mac, Sao chep giao viec, Xoa); dong khi bam ra ngoai/Esc/cuon/chon. Thu 3101 desktop + 390px.
