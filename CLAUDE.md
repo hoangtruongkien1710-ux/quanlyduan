@@ -32,7 +32,7 @@
 - Kho code: https://github.com/hoangtruongkien1710-ux/quanlyduan.git (nhánh main). App chính thức đang chạy trên **VPS** của anh/chị.
 - Sửa và kiểm tra ở **local** trước: `npm.cmd run dev` → http://localhost:3100 (database local riêng, không đụng dữ liệu VPS).
 - Xong thì commit ở local. **Anh/chị tự push** lên GitHub và tự cập nhật VPS (Claude không push, không đụng VPS nếu chưa được yêu cầu).
-- Trên VPS: kéo code mới, `npm install` (khi đổi thư viện), **`npx prisma migrate deploy`** (khi có migration mới), build và khởi động lại app.
+- Trên VPS (`~/quanlyduan`, cổng 3200, DB = container `smee_qlda_db`): chạy **`./capnhat.sh`** — tự sao lưu DB vào ~/backups, git pull, npm install / prisma migrate deploy khi cần, build, `pm2 restart quanlyduan`, kiểm tra app. Có `--dry-run`. Hướng dẫn: `tools/HUONG_DAN_CAP_NHAT_VPS.md`. VPS còn app khác: không đụng cổng / container khác.
 - VPS có file **.env riêng**: không bao giờ commit .env (local hay VPS).
 
 ## Lưu ý kỹ thuật kế thừa từ bản Apps Script
