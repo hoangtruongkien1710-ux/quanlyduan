@@ -23,6 +23,17 @@ App nằm ở `~/quanlyduan` trên VPS, chạy ở cổng **3200**. Database là
 
 Nếu build lỗi, script dừng ngay, app cũ **vẫn chạy**. Muốn xem trước các bước mà không làm gì thì chạy `./capnhat.sh --dry-run`.
 
+## Một lần: đưa bản sửa tay trên VPS về code chung
+Trên VPS từng sửa tay docker-compose.yml (cổng DB 5440) và package.json / package-lock.json (Next.js 15.5.29). Hai thay đổi này nay đã có trong code (cổng đọc từ `DB_PORT` trong .env). Chạy 1 lần:
+```
+cd ~/quanlyduan
+mkdir -p ~/backups/vps_files && cp docker-compose.yml package.json package-lock.json ~/backups/vps_files/
+grep -q '^DB_PORT=' .env || echo 'DB_PORT=5440' >> .env
+git checkout -- docker-compose.yml package.json package-lock.json
+./capnhat.sh
+```
+Script **không** chạy `docker compose`, nên database đang chạy không bị tạo lại. Lưu ý (máy tính / VPS): lần tới tự chạy `docker compose up -d`, Docker sẽ tạo lại container DB theo cổng mới; dữ liệu nằm ở ổ (volume) nên vẫn giữ nguyên.
+
 ## Lần đầu tiên (chỉ làm 1 lần)
 
 1. Lấy script về:

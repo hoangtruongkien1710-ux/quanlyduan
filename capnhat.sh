@@ -5,6 +5,7 @@
 # Các bước: sao lưu DB → git pull → npm install (khi đổi thư viện) → prisma migrate deploy (khi có migration mới)
 #           → build (lỗi thì dừng, app cũ vẫn chạy) → khởi động lại bằng pm2 → kiểm tra app trả lời.
 # Đổi được bằng biến môi trường: PORT (3200), DB_CONTAINER (smee_qlda_db), DB_USER / DB_NAME (smee), BK_DIR (~/backups).
+# Không chạy docker compose: container database KHÔNG bị tạo lại / khởi động lại.
 # Chỉ đụng tới app này (cổng $PORT, pm2 tên quanlyduan) — không đụng các app khác trên VPS.
 set -euo pipefail
 cd "$(dirname "$(readlink -f "$0")")"
@@ -39,7 +40,12 @@ fi
 step "2/7 Lấy code mới (git pull)"
 if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
   git status --short --untracked-files=no
-  die "Thư mục trên VPS có file bị sửa tay — không pull để tránh mất. Gửi danh sách trên cho người hỗ trợ."
+  echo "!! Thư mục trên VPS có file bị sửa tay (danh sách trên) — không pull để tránh mất."
+  echo "   Nếu chỉ là docker-compose.yml / package.json / package-lock.json (đổi cổng DB 5440, Next.js 15.5.29 — nay đã có sẵn trong code):"
+  echo "     mkdir -p ~/backups/vps_files && cp docker-compose.yml package.json package-lock.json ~/backups/vps_files/"
+  echo "     grep -q '^DB_PORT=' .env || echo DB_PORT=5440 >> .env"
+  echo "     git checkout -- docker-compose.yml package.json package-lock.json && ./capnhat.sh"
+  die "File khác thì gửi danh sách trên cho người hỗ trợ."
 fi
 if [ "$DRY" = 1 ]; then
   git fetch -q origin

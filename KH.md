@@ -181,3 +181,4 @@ npm run dev       # mở http://localhost:3100
 - 2026-11-25: Tong quan: bo nut Tao cong viec. Du an: them nut Nhap Excel (quan ly) mo cung popup nhap Excel. Thu 3101 + DB thu, build dat.
 - 2026-11-25: Them capnhat.sh (cap nhat VPS 1 lenh: sao luu DB ~/backups giu 14 ban, git pull --ff-only, npm install/migrate khi can, build, pm2 restart; lan dau tat app chay tay cong 3200 va dang ky pm2; kiem tra HTTP 200; --dry-run) + tools/HUONG_DAN_CAP_NHAT_VPS.md.
 - 2026-11-25: docker-compose cong DB doc tu DB_PORT (mac dinh 5432, VPS 5440, chi 127.0.0.1); nang Next.js 15.5.4 -> 15.5.29 cho khop VPS. Build dat.
+- 2026-11-25: capnhat.sh in san cach xu ly khi VPS co file sua tay (compose/package); huong dan them buoc 1 lan dua ban sua tay ve code chung; script khong chay docker compose (DB khong bi tao lai).
