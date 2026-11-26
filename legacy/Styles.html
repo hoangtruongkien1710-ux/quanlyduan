@@ -914,4 +914,18 @@ th.thf-on{color:#235bd0}
 .thf-pop.sheet{left:0!important;right:0;bottom:0;top:auto!important;max-width:none;border-radius:14px 14px 0 0;padding:14px 16px 18px;box-shadow:0 -10px 30px rgba(15,23,42,.25)}
 .thf-pop.sheet .control{min-height:42px;font-size:13px}
 .tools-clear{white-space:nowrap}
+/* 2026-11-26 — nút phụ đầu màn gom vào "⋯ Thao tác" trên màn nhỏ */
+.head-more{display:contents}
+.head-more-btn{display:none}
+.head-more-list{display:contents}
+@media (max-width:1366px) and (max-height:820px),(max-width:900px){
+  .head-more{display:inline-flex;position:relative}
+  .head-more-btn{display:inline-flex}
+  .head-more-list{display:none;position:absolute;right:0;top:calc(100% + 6px);z-index:65;min-width:220px;flex-direction:column;gap:4px;padding:6px;background:#fff;border:1px solid #e0e7f1;border-radius:10px;box-shadow:0 12px 30px rgba(15,23,42,.18)}
+  .head-more.open .head-more-list{display:flex}
+  .head-more-list>.btn{width:100%;justify-content:flex-start;border:0;box-shadow:none;background:none;min-height:40px}
+  .head-more-list>.btn:hover{background:#eef3fb}
+  .view-header .head-actions{flex-wrap:nowrap}
+}
+@media (max-width:760px){.view-header .head-actions{flex-wrap:wrap}}
 </style>
