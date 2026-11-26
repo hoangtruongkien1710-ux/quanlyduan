@@ -209,3 +209,4 @@ Cần anh/chị chốt:
 - 2026-11-26: Ket qua loai 'Cong viec khac': moi ket qua tinh 1 san pham (truoc tinh 0) — prQty; hien so luong 1 o bang, bao cao ngay, Excel. Thu 3101: 2 ket qua -> Tong 2 san pham, Thang 11 = 2.
 - 2026-11-26: Lap ke hoach Link cho khach xem Ket qua cong viec (KH.md muc 9c) — cho duyet.
 - 2026-11-26: Tam dung ke hoach link cho khach (9c); dung Xuat Excel o Ket qua cong viec.
+- 2026-11-26: Xuat Excel Ket qua cong viec: bo loc (AutoFilter) o hang tieu de; cot Link SP du moi link (moi link 1 dong trong o), link dau bam duoc; sheet moi 'Danh sach link' moi link 1 dong (co Phong ban, Nguoi thuc hien, Hang muc), link bam duoc, co AutoFilter. Man Ket qua cong viec: loc o tieu de cot (Nguoi: Phong ban -> Nhan vien; Du an > cong viec: du an, hang muc, cong viec; Loai; Tien do) + Bo loc cot nay. Thu 3101 + DB thu.
