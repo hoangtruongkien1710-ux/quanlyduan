@@ -158,7 +158,7 @@ npm run dev       # mở http://localhost:3100
 - Trên VPS: kéo code mới, `npm install` (khi đổi thư viện), **`npx prisma migrate deploy`** (khi có migration mới), build và khởi động lại app.
 - VPS có file **.env riêng**: không bao giờ commit .env (local hay VPS).
 
-## 9c. Kế hoạch: Link cho khách xem Kết quả công việc (TẠM DỪNG 26/11 — anh/chị dùng Xuất Excel gửi khách)
+## 9c. Kế hoạch: Link cho khách xem Kết quả công việc (ĐÃ HUỶ theo yêu cầu 2026-11-26 — dùng Xuất Excel ở Kết quả công việc thay thế)
 Mục tiêu: thay file Google Sheet chung. Khách mở 1 link, xem và lọc kết quả công việc của dự án mình, không sửa được, không cần đăng nhập.
 
 Cách làm đề xuất:
