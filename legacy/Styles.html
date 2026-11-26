@@ -786,7 +786,7 @@ body.is-busy{cursor:progress}button.is-loading,#saveModal:disabled{opacity:.8;cu
 .sticky-wrap .g-head{position:sticky;top:0;z-index:5}
 .table-wrap.sticky-page{overflow:visible}.sticky-page>table>thead th{position:sticky;top:var(--tools-bottom,0px);z-index:3;background:#fafcff;box-shadow:inset 0 -1px 0 var(--line)}
 .kb-col{max-height:calc(100vh - var(--tools-bottom,160px) - 24px)}
-@media (max-width:760px),(max-height:700px){.tools-toggle{display:inline-flex}.sticky-tools{padding:4px 0}.sticky-tools.collapsed>*:not(.tools-toggle){display:none}
+@media (max-width:760px),(max-height:700px){.tools-toggle{display:inline-flex}.sticky-tools{padding:4px 0}.sticky-tools.collapsed>.tools-panel{display:none}
   .sticky-tools .filterbar{gap:6px}.sticky-tools .control{min-height:32px}}
 .pill.prio-elevated,.pc-elevated{background:#dbeafe;color:#1e40af}
 .pr-elevated{--pr:#2563eb}
@@ -880,4 +880,24 @@ body.is-busy{cursor:progress}button.is-loading,#saveModal:disabled{opacity:.8;cu
 .act-menu .act-item.icon-alert{color:#b45309}
 .act-menu .act-sep{border:0;border-top:1px solid #eef1f6;margin:3px 2px}
 @media(max-width:700px){.act-menu{min-width:230px}.act-menu .act-item{min-height:42px;font-size:13.5px}.task-table .act-toggle{width:32px;height:32px;min-width:32px}}
+/* 2026-11-26 — hàng bộ lọc nhanh + khu bộ lọc mở/đóng (mọi màn danh sách) */
+.sticky-tools .tools-toggle{display:inline-flex;white-space:nowrap}
+.tools-toggle[hidden]{display:none!important}
+.tools-quick{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.tools-quick .search,.tools-quick .search-box{flex:1 1 200px;min-width:160px;max-width:340px;margin:0}
+.tools-quick .search-box .search{max-width:none;width:100%}
+.tools-quick .control{min-height:34px}
+.tools-quick .blk-seg,.tools-quick .view-seg{display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap}
+.tools-panel{margin-top:6px}.tools-panel>*{margin-bottom:6px}.tools-panel>*:last-child{margin-bottom:0}
+.tools-panel .today-bar:empty{display:none}
+.sticky-tools.collapsed .tools-panel{display:none}
+.sticky-tools.collapsed>.tools-panel{display:none}
+@media(max-width:760px){
+  .tools-panel .filterbar{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .tools-panel .filterbar>*{min-width:0;width:100%;max-width:none}
+  .tools-panel .filterbar .control{min-width:0}
+  .tools-quick .search,.tools-quick .search-box{flex-basis:100%;max-width:none;order:9}
+  .tools-quick .blk-seg b{display:none}
+  .tools-quick .today-chip{padding:5px 10px;font-size:12px}
+}
 </style>
