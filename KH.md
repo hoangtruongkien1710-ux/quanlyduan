@@ -186,3 +186,4 @@ npm run dev       # mở http://localhost:3100
 - 2026-11-26: Cong viec: nut loc canh ten cot (Cong viec/hang muc: du an, hang muc, dau viec; Nguoi thuc hien: Phong ban -> Nhan vien; Uu tien (loc moi); Trang thai; Ket qua thoi han; Cho/vuong). Cot dang loc doi mau; dien thoai hien dang bang duoi day man. So loc tinh ca loc o cot; nut 'Xoa loc' o hang nhanh. Sua 'Bo loc (1)' sai o Ket qua cong viec. Cac man khac chua lam loc theo cot.
 - 2026-11-26: Hang nut dau man (moi man co >=3 nut): man nho (<=900px hoac <=1366x820) chi hien nut chinh (xanh) + '⋯ Thao tac' mo menu cac nut phu; man lon hien du (nut chinh xep truoc).
 - 2026-11-26: Nut '⋯ Thao tac' dau man ap dung moi kich co man hinh (theo yeu cau nguoi dung).
+- 2026-11-26: Loc o cot: moi o loc (khi cot dang loc) co nut 'Bo loc cot nay' chi xoa loc cua cot do (Nguoi thuc hien: bo ca Phong ban + Nhan vien); van giu nut Xoa loc tong.
