@@ -187,3 +187,4 @@ npm run dev       # mở http://localhost:3100
 - 2026-11-26: Hang nut dau man (moi man co >=3 nut): man nho (<=900px hoac <=1366x820) chi hien nut chinh (xanh) + '⋯ Thao tac' mo menu cac nut phu; man lon hien du (nut chinh xep truoc).
 - 2026-11-26: Nut '⋯ Thao tac' dau man ap dung moi kich co man hinh (theo yeu cau nguoi dung).
 - 2026-11-26: Loc o cot: moi o loc (khi cot dang loc) co nut 'Bo loc cot nay' chi xoa loc cua cot do (Nguoi thuc hien: bo ca Phong ban + Nhan vien); van giu nut Xoa loc tong.
+- 2026-11-26: Ket qua loai 'Cong viec khac': moi ket qua tinh 1 san pham (truoc tinh 0) — prQty; hien so luong 1 o bang, bao cao ngay, Excel. Thu 3101: 2 ket qua -> Tong 2 san pham, Thang 11 = 2.
