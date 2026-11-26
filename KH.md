@@ -158,6 +158,25 @@ npm run dev       # mở http://localhost:3100
 - Trên VPS: kéo code mới, `npm install` (khi đổi thư viện), **`npx prisma migrate deploy`** (khi có migration mới), build và khởi động lại app.
 - VPS có file **.env riêng**: không bao giờ commit .env (local hay VPS).
 
+## 9c. Kế hoạch: Link cho khách xem Kết quả công việc (CHỜ DUYỆT)
+Mục tiêu: thay file Google Sheet chung. Khách mở 1 link, xem và lọc kết quả công việc của dự án mình, không sửa được, không cần đăng nhập.
+
+Cách làm đề xuất:
+1. Quản lý (Account / Trợ lý GĐ / Giám đốc) mở Dự án → bấm "🔗 Link cho khách" → app tạo link riêng cho dự án đó, ví dụ https://<tên miền>/khach/<mã ngẫu nhiên 32+ ký tự>.
+   - Có các nút: Sao chép link, Tạo link mới (link cũ hết hiệu lực), Tắt link. Tuỳ chọn ngày hết hạn.
+2. Trang khách là trang riêng, chỉ đọc (không tải app nội bộ). Máy chủ chỉ trả dữ liệu của đúng dự án đó.
+   - Khách thấy: STT, Ngày thực hiện, Hạng mục, Công việc, Tên sản phẩm / mô tả, Loại, Số lượng, Link sản phẩm, Tiến độ.
+   - Khách lọc được: năm/tháng (12 nút tháng có số lượng), hạng mục, công việc, loại, ô tìm kiếm. Có thể tải Excel.
+   - Không lộ: mã đăng nhập, giờ làm, vướng mắc, ghi chú nội bộ, đề xuất, dữ liệu dự án khác. Tên người làm: tuỳ chọn ẩn/hiện.
+3. Bảo mật: mã link không đoán được (lưu dạng băm), tắt / đổi link bất cứ lúc nào, chặn gọi dồn dập, không cho Google tìm thấy (noindex), ghi lại lần xem gần nhất. Bắt buộc HTTPS (VPS cần tên miền + chứng chỉ, ví dụ qua nginx / Caddy).
+4. Kỹ thuật: thêm bảng ShareLink (migration mới → trên VPS ./capnhat.sh tự chạy prisma migrate deploy), route /khach/[token] + API chỉ đọc. Ước lượng: 1 phiên làm.
+
+Cần anh/chị chốt:
+- Hiện tên người làm cho khách không?
+- 1 link / dự án là đủ, hay cần link theo từng hạng mục?
+- Link có hạn dùng không (vd 6 tháng) hay dùng mãi đến khi tắt?
+- VPS đã có tên miền + HTTPS chưa (để gửi link cho khách)?
+
 ## 10. Nhật ký tiến độ
 - 23/11/2026: Kiểm tra môi trường: Docker 29.8, Compose 5.5, Node 26, npm 11. Tạo thư mục SMEE_NEXT, cài Next.js 15.5.4, Prisma 6.16.2. Viết KH.md.
 - 23/11/2026: Theo yêu cầu, chuyển thư mục vào `D:\WEBSITE SMEE\WEB NỘI BỘ` và đổi tên thành **Quản lý dự án và công việc** (giữ lịch sử git). Đang chờ duyệt kế hoạch trước khi làm Giai đoạn 1.
@@ -188,3 +207,4 @@ npm run dev       # mở http://localhost:3100
 - 2026-11-26: Nut '⋯ Thao tac' dau man ap dung moi kich co man hinh (theo yeu cau nguoi dung).
 - 2026-11-26: Loc o cot: moi o loc (khi cot dang loc) co nut 'Bo loc cot nay' chi xoa loc cua cot do (Nguoi thuc hien: bo ca Phong ban + Nhan vien); van giu nut Xoa loc tong.
 - 2026-11-26: Ket qua loai 'Cong viec khac': moi ket qua tinh 1 san pham (truoc tinh 0) — prQty; hien so luong 1 o bang, bao cao ngay, Excel. Thu 3101: 2 ket qua -> Tong 2 san pham, Thang 11 = 2.
+- 2026-11-26: Lap ke hoach Link cho khach xem Ket qua cong viec (KH.md muc 9c) — cho duyet.
