@@ -900,4 +900,18 @@ body.is-busy{cursor:progress}button.is-loading,#saveModal:disabled{opacity:.8;cu
   .tools-quick .blk-seg b{display:none}
   .tools-quick .today-chip{padding:5px 10px;font-size:12px}
 }
+/* 2026-11-26 — nút lọc ở tiêu đề cột (bảng Công việc) */
+th.thf{white-space:nowrap}
+.thf-btn{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;margin-left:5px;padding:0;border:1px solid transparent;border-radius:5px;background:none;color:#94a3b8;cursor:pointer;vertical-align:middle}
+.thf-btn:hover,.thf-btn.open{background:#eef3fb;color:#235bd0;border-color:#d6e2f3}
+.thf-btn.on{background:#235bd0;color:#fff;border-color:#235bd0}
+th.thf-on{color:#235bd0}
+.thf-pop{position:fixed;z-index:70;min-width:220px;max-width:320px;background:#fff;border:1px solid #e0e7f1;border-radius:10px;box-shadow:0 12px 30px rgba(15,23,42,.18);padding:10px;display:flex;flex-direction:column;gap:8px;text-align:left;white-space:normal;font-weight:400}
+.thf-pop[hidden]{display:none}
+.thf-title{font-size:11px;font-weight:700;color:#235bd0;text-transform:none}
+.thf-pop .control{width:100%;min-width:0;max-width:none}
+.thf-pop .blk-seg{display:flex;flex-wrap:wrap;gap:5px}.thf-pop .blk-seg b{display:none}
+.thf-pop.sheet{left:0!important;right:0;bottom:0;top:auto!important;max-width:none;border-radius:14px 14px 0 0;padding:14px 16px 18px;box-shadow:0 -10px 30px rgba(15,23,42,.25)}
+.thf-pop.sheet .control{min-height:42px;font-size:13px}
+.tools-clear{white-space:nowrap}
 </style>
