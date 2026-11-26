@@ -158,7 +158,7 @@ npm run dev       # mở http://localhost:3100
 - Trên VPS: kéo code mới, `npm install` (khi đổi thư viện), **`npx prisma migrate deploy`** (khi có migration mới), build và khởi động lại app.
 - VPS có file **.env riêng**: không bao giờ commit .env (local hay VPS).
 
-## 9c. Kế hoạch: Link cho khách xem Kết quả công việc (CHỜ DUYỆT)
+## 9c. Kế hoạch: Link cho khách xem Kết quả công việc (TẠM DỪNG 26/11 — anh/chị dùng Xuất Excel gửi khách)
 Mục tiêu: thay file Google Sheet chung. Khách mở 1 link, xem và lọc kết quả công việc của dự án mình, không sửa được, không cần đăng nhập.
 
 Cách làm đề xuất:
@@ -208,3 +208,4 @@ Cần anh/chị chốt:
 - 2026-11-26: Loc o cot: moi o loc (khi cot dang loc) co nut 'Bo loc cot nay' chi xoa loc cua cot do (Nguoi thuc hien: bo ca Phong ban + Nhan vien); van giu nut Xoa loc tong.
 - 2026-11-26: Ket qua loai 'Cong viec khac': moi ket qua tinh 1 san pham (truoc tinh 0) — prQty; hien so luong 1 o bang, bao cao ngay, Excel. Thu 3101: 2 ket qua -> Tong 2 san pham, Thang 11 = 2.
 - 2026-11-26: Lap ke hoach Link cho khach xem Ket qua cong viec (KH.md muc 9c) — cho duyet.
+- 2026-11-26: Tam dung ke hoach link cho khach (9c); dung Xuat Excel o Ket qua cong viec.
